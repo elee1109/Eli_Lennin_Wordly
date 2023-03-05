@@ -10,6 +10,6 @@
         android:id="@+id/splash_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/Wordly"
+        android:src="@drawable/wordly"
         android:scaleType="centerCrop" />
 </androidx.constraintlayout.widget.ConstraintLayout>
