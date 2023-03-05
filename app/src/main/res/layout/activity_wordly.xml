@@ -7,17 +7,15 @@
     android:background="@android:color/holo_blue_light"
     tools:context=".WordlyActivity">
 
-
     <Button
         android:id="@+id/hint_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="595dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="464dp"
+        android:layout_marginEnd="32dp"
         android:background="@drawable/hint_button"
+        style="@style/HintButton"
         android:text="HINT"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
