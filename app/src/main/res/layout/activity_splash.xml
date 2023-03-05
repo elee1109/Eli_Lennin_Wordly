@@ -7,9 +7,11 @@
     tools:context=".SplashActivity">
 
     <ImageView
-        android:id="@+id/splash_image"
+        android:id="@+id/worldy"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/wordly"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
