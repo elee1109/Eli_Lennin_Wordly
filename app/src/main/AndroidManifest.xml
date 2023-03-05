@@ -12,9 +12,6 @@
         android:theme="@style/Theme.Wordly"
         tools:targetApi="31">
         <activity
-            android:name=".WordlyActivity"
-            android:exported="false" />
-        <activity
             android:name=".SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
@@ -22,6 +19,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.SplashScreen"
             android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <activity
+            android:name=".WordlyActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
