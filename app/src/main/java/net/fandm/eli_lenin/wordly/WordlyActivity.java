@@ -41,7 +41,7 @@ import java.util.List;
 public class WordlyActivity extends AppCompatActivity {
 
     final private String API_KEY = "34157164-7fb926e23417bdc9eb71940cc";
-    private String next_word = "corn"; //change when algo built
+    public String next_word = "corn"; //change when algo built
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +91,6 @@ public class WordlyActivity extends AppCompatActivity {
                                 .appendPath("api");
 
                         // Add query parameters to the URL
-                        builder.appendQueryParameter("key", API_KEY);
-                        builder.appendQueryParameter("q", next_word);
-                        builder.appendQueryParameter("image_type", "photo");
 
 
 
@@ -102,15 +99,22 @@ public class WordlyActivity extends AppCompatActivity {
                         //and this stackoverflow post: https://stackoverflow.com/questions/40587168/simple-android-volley-example
                         //and ChatGPT3
 
-                        String url = (builder.build().toString());
-                        URL pixabay_url = new URL(url);
+                        String link = "https://pixabay.com/api/?key=34157164-7fb926e23417bdc9eb71940cc&q=c"+next_word+"&image_type=photo";
+                        String hardcoded = "https://pixabay.com/api/?key=34157164-7fb926e23417bdc9eb71940cc&q=corn&image_type=photo&pretty=true";
+                        if(link.equals(hardcoded)){
+                            Log.d("Link", "equal");
+                        }
+                        else{
+                            Log.d("Link", "Not");
+                        }
+                        URL pixabay_url = new URL("https://pixabay.com/api/?key=34157164-7fb926e23417bdc9eb71940cc&q="+next_word+"&image_type=photo&pretty=true");
                         HttpURLConnection conn = (HttpURLConnection) pixabay_url.openConnection();
                         conn.setRequestMethod("GET");
                         conn.connect();
                         Log.d("Response code", String.valueOf(conn.getResponseCode()));
 
                         int responsecode = conn.getResponseCode();
-                        if(responsecode == 301){
+                        if (responsecode == 301) {
                             String newUrl = conn.getHeaderField("Location");
                             Log.d("New URL", newUrl);
                             pixabay_url = new URL(newUrl);
@@ -122,7 +126,7 @@ public class WordlyActivity extends AppCompatActivity {
 
                         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                         Log.d("BufferedReader", in.toString());
-                        String inputLine;
+                        String inputLine = null;
                         StringBuilder sb = new StringBuilder();
                         while ((inputLine = in.readLine()) != null) {
                             sb.append(inputLine);
@@ -141,31 +145,6 @@ public class WordlyActivity extends AppCompatActivity {
                         //RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                         ArrayList<String> imageUrls = new ArrayList<>();
 
-                        /**
-                         * USING VOLLEY (301)
-
-                        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                try {
-                                    JSONObject jsonObject = new JSONObject(response);
-                                    JSONArray jsonArray = jsonObject.getJSONArray("hits");
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        JSONObject hit = jsonArray.getJSONObject(i);
-                                        String imageURL = hit.getString("webformatURL");
-                                        imageUrls.add(imageURL);
-
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                        }, Throwable::printStackTrace);
-
-                        Volley.newRequestQueue(getApplicationContext()).add(stringRequest);
-                        */
-
 
                         InputStream inptstrm = new BufferedInputStream(img_url.openStream());
                         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -182,10 +161,11 @@ public class WordlyActivity extends AppCompatActivity {
                         callback.onComplete(image);
                         out.close();
                         in.close();
-
                     } catch (IOException e) {
+                        Log.e("ImageHintExecutor", "IOException: " + e.getMessage());
                         e.printStackTrace();
                     } catch (JSONException e) {
+                        Log.e("ImageHintExecutor", "JSONException: " + e.getMessage());
                         throw new RuntimeException(e);
                     }
 
