@@ -6,7 +6,16 @@
     android:layout_height="match_parent"
     android:background="@android:color/holo_blue_light"
     tools:context=".WordlyActivity">
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/hint_button"
+        android:id="@+id/hint_image"
 
+    />
     <Button
         android:id="@+id/hint_button"
         android:layout_width="wrap_content"
