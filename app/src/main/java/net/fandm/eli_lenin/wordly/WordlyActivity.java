@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -43,6 +44,8 @@ public class WordlyActivity extends AppCompatActivity {
     public int index =0;
     public String next_word; //change when algo built
 
+    public View decorView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +59,9 @@ public class WordlyActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), next_word, Toast.LENGTH_LONG).show();
 
 
-        View decorView = getWindow().getDecorView();
+
+        decorView = getWindow().getDecorView();
+
         decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
             @Override
             public void onSystemUiVisibilityChange(int visibility) {
@@ -197,11 +202,18 @@ public class WordlyActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        View decorView = getWindow().getDecorView();
+        decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        hideSystemUI();
+        return super.onTouchEvent(event);
+    }
+
     private void hideSystemUI() {
-        View decorView = getWindow().getDecorView();
+        decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
     }
