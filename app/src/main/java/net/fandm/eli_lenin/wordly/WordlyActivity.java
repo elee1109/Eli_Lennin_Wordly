@@ -2,9 +2,14 @@ package net.fandm.eli_lenin.wordly;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -46,6 +51,8 @@ public class WordlyActivity extends AppCompatActivity {
 
     public View decorView;
 
+    ImageView star;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +69,17 @@ public class WordlyActivity extends AppCompatActivity {
         next_word = correct_path.get(1);
         Toast.makeText(getApplicationContext(), next_word, Toast.LENGTH_LONG).show();
 
+        star = findViewById(R.id.gold_star);
+        star.setVisibility(View.GONE);
+        star.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Animator animator = AnimatorInflater.loadAnimator(getApplicationContext(), R.animator.star_animator);
+                animator.setTarget(star);
+                animator.start();
+            }
 
+        });
 
 
         decorView = getWindow().getDecorView();
