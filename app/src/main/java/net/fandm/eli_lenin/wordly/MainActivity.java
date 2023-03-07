@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,14 +19,17 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
 
     Button play;
+    private ArrayList<String> sendPath= new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,20 +38,7 @@ public class MainActivity extends AppCompatActivity {
         newPuzzle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    ArrayList<String> words = readWordsFromFile();
-                    String[] randomWords = selectRandomWords(words);
-                    String toast = "Word 1: " + randomWords[0] + " Word 2: " + randomWords[1];
-                    Toast.makeText(MainActivity.this, toast, Toast.LENGTH_SHORT).show();
-                    EditText word1 = findViewById(R.id.start_word);
-                    EditText word2 = findViewById(R.id.end_word);
-                    word1.setText(randomWords[0]);
-                    word2.setText(randomWords[1]);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
+                createPuzzle();
             }
         });
 
@@ -58,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), WordlyActivity.class);
+                Log.d("sendPath", sendPath.toString());
+                intent.putStringArrayListExtra("path", sendPath);
                 startActivity(intent);
 
             }
@@ -85,6 +78,41 @@ public class MainActivity extends AppCompatActivity {
             // Do something for the first time, like show an introduction or tutorial screen
         } else {
             Toast.makeText(this, "Welcome Back!", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+    }
+    public void createPuzzle(){
+        try {
+            ArrayList<String> words = readWordsFromFile();
+            String[] randomWords = selectRandomWords(words);
+            String startWord = randomWords[0];
+            String endWord = randomWords[1];
+            String toast = "Word 1: " + randomWords[0] + " Word 2: " + randomWords[1];
+            Toast.makeText(MainActivity.this, toast, Toast.LENGTH_SHORT).show();
+            Graph graph = new Graph();
+            graph.buildGraph(words);
+            ArrayList<String> path = graph.shortestPath(startWord, endWord);
+            Log.d("path", path.toString());
+            if (path == null) {
+                Toast.makeText(MainActivity.this, "No path found", Toast.LENGTH_SHORT).show();
+                sendPath = null;
+
+            } else {
+                Toast.makeText(MainActivity.this, "Path found", Toast.LENGTH_SHORT).show();
+                EditText word1 = findViewById(R.id.start_word);
+                EditText word2 = findViewById(R.id.end_word);
+                word1.setText(randomWords[0]);
+                word2.setText(randomWords[1]);
+                sendPath = path;
+
+
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
 

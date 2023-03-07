@@ -1,6 +1,9 @@
 package net.fandm.eli_lenin.wordly;
 import java.util.*;
 
+/**
+ * Graph class for Wordly. Made with ChatGPT3
+ */
 public class Graph {
     private Map<String, List<String>> wordList;
 
@@ -21,7 +24,7 @@ public class Graph {
         wordList.get(v2).add(v1); // undirected graph
     }
 
-    public List<String> shortestPath(String start, String end) {
+    public ArrayList<String> shortestPath(String start, String end) {
         Map<String, String> prev = new HashMap<>();
         Queue<String> queue = new LinkedList<>();
         queue.add(start);
@@ -44,7 +47,7 @@ public class Graph {
             return null;
         }
 
-        List<String> path = new ArrayList<>();
+        ArrayList<String> path = new ArrayList<>();
         String current = end;
         while (current != null) {
             path.add(0, current);
@@ -52,5 +55,34 @@ public class Graph {
         }
 
         return path;
+    }
+
+    public void buildGraph(ArrayList<String> words) {
+        for (String word : words) {
+            addVertex(word);
+        }
+        for (String word : words) {
+            for (String otherWord : words) {
+                if (word.equals(otherWord)) {
+                    continue;
+                }
+                if (isOneLetterOff(word, otherWord)) {
+                    addEdge(word, otherWord);
+                }
+            }
+        }
+    }
+
+    private boolean isOneLetterOff(String word, String otherWord) {
+        if (word.length() != otherWord.length()) {
+            return false;
+        }
+        int numDifferences = 0;
+        for (int i = 0; i < word.length(); i++) {
+            if (word.charAt(i) != otherWord.charAt(i)) {
+                numDifferences++;
+            }
+        }
+        return numDifferences == 1;
     }
 }

@@ -38,7 +38,7 @@ public class WordlyActivity extends AppCompatActivity {
 
     private final int delay = 2000;
     public int index =0;
-    public String next_word = "cats"; //change when algo built
+    public String next_word; //change when algo built
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,7 @@ public class WordlyActivity extends AppCompatActivity {
         ImageHintExecutor ihe = new ImageHintExecutor();
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
         iv.setImageResource(R.drawable.wordly);
+        next_word =  getIntent().getStringArrayListExtra("path").get(0);
         ihe.execute(new ImageHintCallback() {
             @Override
             public void onComplete(ArrayList<Bitmap> images) {
