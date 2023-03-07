@@ -29,12 +29,26 @@ public class MainActivity extends AppCompatActivity {
 
 
     Button play;
+    Graph graph= new Graph();
+    ArrayList<String> words;
     private ArrayList<String> sendPath= new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button newPuzzle = findViewById(R.id.new_puzzle);
+
+
+
+        try {
+            words = readWordsFromFile();
+            graph.buildGraph(words);
+            createPuzzle();  //when app boots up create new puzzle
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         newPuzzle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,10 +62,25 @@ public class MainActivity extends AppCompatActivity {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), WordlyActivity.class);
-                Log.d("sendPath", sendPath.toString());
-                intent.putStringArrayListExtra("path", sendPath);
-                startActivity(intent);
+
+                EditText startWord = findViewById(R.id.start_word);
+                EditText endWord = findViewById(R.id.end_word);
+                String start = startWord.getText().toString();
+                String end = endWord.getText().toString();
+                ArrayList<String> potentialPath = graph.shortestPath(start, end);
+                if(potentialPath == null){
+                    Toast.makeText(MainActivity.this, "No path found", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    sendPath = potentialPath;
+                    Toast.makeText(MainActivity.this, "Path found", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), WordlyActivity.class);
+                    Log.d("sendPath", sendPath.toString());
+
+                    intent.putStringArrayListExtra("path", sendPath);
+                    startActivity(intent);
+                }
+
 
             }
         });
@@ -84,37 +113,30 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void createPuzzle(){
-        try {
-            ArrayList<String> words = readWordsFromFile();
-            String[] randomWords = selectRandomWords(words);
-            String startWord = randomWords[0];
-            String endWord = randomWords[1];
-            String toast = "Word 1: " + randomWords[0] + " Word 2: " + randomWords[1];
-            Toast.makeText(MainActivity.this, toast, Toast.LENGTH_SHORT).show();
-            Graph graph = new Graph();
-            graph.buildGraph(words);
-            ArrayList<String> path = graph.shortestPath(startWord, endWord);
-            Log.d("path", path.toString());
-            if (path == null) {
-                Toast.makeText(MainActivity.this, "No path found", Toast.LENGTH_SHORT).show();
-                sendPath = null;
 
-            } else {
-                Toast.makeText(MainActivity.this, "Path found", Toast.LENGTH_SHORT).show();
-                EditText word1 = findViewById(R.id.start_word);
-                EditText word2 = findViewById(R.id.end_word);
-                word1.setText(randomWords[0]);
-                word2.setText(randomWords[1]);
-                sendPath = path;
+        String[] randomWords = selectRandomWords(words);
+        String startWord = randomWords[0];
+        String endWord = randomWords[1];
+        String toast = "Word 1: " + randomWords[0] + " Word 2: " + randomWords[1];
+        Toast.makeText(MainActivity.this, toast, Toast.LENGTH_SHORT).show();
+        Graph graph = new Graph();
+        graph.buildGraph(words);
+        ArrayList<String> path = graph.shortestPath(startWord, endWord);
+        Log.d("path", path.toString());
+        if (path == null) {
+            Toast.makeText(MainActivity.this, "No path found", Toast.LENGTH_SHORT).show();
+            sendPath = null;
 
-
-            }
+        } else {
+            Toast.makeText(MainActivity.this, "Path found", Toast.LENGTH_SHORT).show();
+            EditText word1 = findViewById(R.id.start_word);
+            EditText word2 = findViewById(R.id.end_word);
+            word1.setText(randomWords[0]);
+            word2.setText(randomWords[1]);
+            sendPath = path;
 
 
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
 
 
     }

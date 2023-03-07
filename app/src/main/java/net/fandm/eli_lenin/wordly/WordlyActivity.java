@@ -52,7 +52,7 @@ public class WordlyActivity extends AppCompatActivity {
         ImageHintExecutor ihe = new ImageHintExecutor();
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
         iv.setImageResource(R.drawable.wordly);
-       // next_word =  getIntent().getStringArrayListExtra("path").get(0);
+        next_word =  getIntent().getStringArrayListExtra("path").get(0);
 
         View decorView = getWindow().getDecorView();
         decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
@@ -87,9 +87,6 @@ public class WordlyActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "Hint!", Toast.LENGTH_LONG).show();
 
-
-
-
             }
         });
     }
@@ -111,23 +108,20 @@ public class WordlyActivity extends AppCompatActivity {
                         // Build the URL object
                         //found this using a combination of this video: https://www.youtube.com/watch?v=1Q9QZ4Y6zqU
 
-
-
-
                         URL pixabay_url = new URL("https://pixabay.com/api/?key=34157164-7fb926e23417bdc9eb71940cc&q="+next_word+"&image_type=photo&pretty=true");
                         HttpURLConnection conn = (HttpURLConnection) pixabay_url.openConnection();
                         conn.setRequestMethod("GET");
                         conn.connect();
-                        Log.d("Response code", String.valueOf(conn.getResponseCode()));
+
 
                         int responsecode = conn.getResponseCode();
                         if (responsecode == 301) {
                             //handles redirects
                             String newUrl = conn.getHeaderField("Location");
-                            Log.d("New URL", newUrl);
+
                             pixabay_url = new URL(newUrl);
                             conn = (HttpURLConnection) pixabay_url.openConnection();
-                            Log.d("Connection", "Reconnected");
+
                             conn.setRequestMethod("GET");
                             conn.connect();
                         }
@@ -156,7 +150,7 @@ public class WordlyActivity extends AppCompatActivity {
                         for (int i = 0; i < length; i++) {
                             JSONObject hit = jsonArray.getJSONObject(i);
                             String imageURL = hit.getString("webformatURL");
-                            Log.d("Image URL", imageURL);
+
                             img_url = new URL(imageURL);
                             InputStream inptstrm = new BufferedInputStream(img_url.openStream());
                             ByteArrayOutputStream out = new ByteArrayOutputStream();
