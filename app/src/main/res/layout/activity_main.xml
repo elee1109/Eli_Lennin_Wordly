@@ -37,7 +37,7 @@
             android:layout_column="2"
             android:layout_row="0"
             android:hint="enter word"
-            android:inputType="number"
+            android:inputType="text"
             />
         <Button
             android:id="@+id/new_puzzle"

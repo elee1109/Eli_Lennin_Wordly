@@ -38,7 +38,7 @@ public class WordlyActivity extends AppCompatActivity {
 
     private final int delay = 2000;
     public int index =0;
-    public String next_word = "corn"; //change when algo built
+    public String next_word = "cats"; //change when algo built
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +129,13 @@ public class WordlyActivity extends AppCompatActivity {
                         JSONArray jsonArray = jsonObject.getJSONArray("hits");
                         ArrayList<Bitmap> bitmap_images = new ArrayList<>();
                         URL img_url = null;
-                        for (int i = 0; i < 5; i++) {
+
+                        int length = jsonArray.length();
+
+                        if(length > 5) length = 5;
+                        else length = jsonArray.length();
+
+                        for (int i = 0; i < length; i++) {
                             JSONObject hit = jsonArray.getJSONObject(i);
                             String imageURL = hit.getString("webformatURL");
                             Log.d("Image URL", imageURL);
