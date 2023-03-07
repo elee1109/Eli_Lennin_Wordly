@@ -4,22 +4,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -51,12 +51,17 @@ public class WordlyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_wordly);
-
         ImageHintExecutor ihe = new ImageHintExecutor();
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
         iv.setImageResource(R.drawable.wordly);
-        next_word =  getIntent().getStringArrayListExtra("path").get(0);
+        ArrayList<String> correct_path =  getIntent().getStringArrayListExtra("path");
+        TextView tv1 = (TextView) findViewById(R.id.textView1);
+        TextView tv4 = (TextView) findViewById(R.id.textView4);
+        tv1.setText(correct_path.get(0));
+        tv4.setText(correct_path.get(correct_path.size()-1));
+        next_word = correct_path.get(1);
         Toast.makeText(getApplicationContext(), next_word, Toast.LENGTH_LONG).show();
+
 
 
 
