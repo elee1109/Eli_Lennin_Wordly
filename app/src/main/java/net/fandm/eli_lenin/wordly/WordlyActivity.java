@@ -53,6 +53,8 @@ public class WordlyActivity extends AppCompatActivity {
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
         iv.setImageResource(R.drawable.wordly);
         next_word =  getIntent().getStringArrayListExtra("path").get(0);
+        Toast.makeText(getApplicationContext(), next_word, Toast.LENGTH_LONG).show();
+
 
         View decorView = getWindow().getDecorView();
         decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
@@ -63,7 +65,6 @@ public class WordlyActivity extends AppCompatActivity {
                 }
             }
         });
-
 
         ihe.execute(new ImageHintCallback() {
             @Override
