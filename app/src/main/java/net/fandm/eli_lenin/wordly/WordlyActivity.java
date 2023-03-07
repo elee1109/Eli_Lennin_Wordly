@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -43,11 +45,13 @@ public class WordlyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_wordly);
         ImageHintExecutor ihe = new ImageHintExecutor();
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
         iv.setImageResource(R.drawable.wordly);
-        next_word =  getIntent().getStringArrayListExtra("path").get(0);
+       // next_word =  getIntent().getStringArrayListExtra("path").get(0);
+
         ihe.execute(new ImageHintCallback() {
             @Override
             public void onComplete(ArrayList<Bitmap> images) {

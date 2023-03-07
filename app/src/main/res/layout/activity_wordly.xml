@@ -38,6 +38,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="16dp"
+        android:background="@color/purple_200"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -47,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
             android:text="Word 1"
+            android:background="@drawable/bordered_textview"
             android:textSize="18sp" />
 
         <TextView
@@ -55,6 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
             android:text="Word 2"
+            android:background="@drawable/bordered_textview"
             android:textSize="18sp" />
 
         <TextView
@@ -63,6 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
             android:text="Word 3"
+            android:background="@drawable/bordered_textview"
             android:textSize="18sp" />
 
         <TextView
@@ -70,6 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Word 4"
+            android:background="@drawable/bordered_textview"
             android:textSize="18sp" />
 
     </LinearLayout>
