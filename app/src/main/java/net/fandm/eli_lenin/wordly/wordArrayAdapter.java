@@ -38,7 +38,10 @@ public class wordArrayAdapter extends ArrayAdapter<String> {
         }
 
         TextView textView = gridView.findViewById(R.id.word_textview);
-        textView.setText(words.get(position));
+        if(position == 0 || position == words.size()-1) {
+
+            textView.setText(words.get(position));
+        }
 
 
         return gridView;

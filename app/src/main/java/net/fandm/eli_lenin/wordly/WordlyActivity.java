@@ -73,7 +73,7 @@ public class WordlyActivity extends AppCompatActivity {
         iv.setImageResource(R.drawable.wordly);
         correct_path =  getIntent().getStringArrayListExtra("path");
         next_word = correct_path.get(1);
-        Toast.makeText(getApplicationContext(), next_word, Toast.LENGTH_LONG).show();
+
         waa = new wordArrayAdapter(this, R.layout.word_list_item, correct_path);
         GridView gv = findViewById(R.id.word_list);
         gv.setAdapter(waa);
@@ -81,7 +81,6 @@ public class WordlyActivity extends AppCompatActivity {
 
         star = findViewById(R.id.gold_star);
         star.setVisibility(View.GONE);
-
         star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,13 +93,10 @@ public class WordlyActivity extends AppCompatActivity {
 
         /**
         tv2.setOnClickListener(new View.OnClickListener() {
-=======
-
 
         TextView tv2 = (TextView) findViewById(R.id.textView2);
         TextView tv3 = (TextView) findViewById(R.id.textView3);
         tv3.setOnClickListener(new View.OnClickListener() {
->>>>>>> dcd4594c653f54152181b70ca3bfab384108aee0
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(WordlyActivity.this);

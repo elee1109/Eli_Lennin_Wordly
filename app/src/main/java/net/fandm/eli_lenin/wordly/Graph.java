@@ -25,11 +25,17 @@ public class Graph {
     }
 
     public ArrayList<String> shortestPath(String start, String end) {
+        if (!wordList.containsKey(start)) {
+            addVertex(start);
+        }
+        if (!wordList.containsKey(end)) {
+            addVertex(end);
+        }
         Map<String, String> prev = new HashMap<>();
         Queue<String> queue = new LinkedList<>();
         queue.add(start);
         prev.put(start, null);
-
+        //this needs to account for words that are not in the list
         while (!queue.isEmpty()) {
             String current = queue.poll();
             if (current.equals(end)) {
