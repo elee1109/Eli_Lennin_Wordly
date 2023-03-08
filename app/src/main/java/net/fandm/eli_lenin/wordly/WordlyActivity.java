@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -78,6 +79,39 @@ public class WordlyActivity extends AppCompatActivity {
         GridView gv = findViewById(R.id.word_list);
         gv.setAdapter(waa);
         waa.notifyDataSetChanged();
+        gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(WordlyActivity.this);
+                builder.setTitle("Guess a word");
+
+                // Set up the input
+                final EditText input = new EditText(WordlyActivity.this);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                // Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String text = input.getText().toString();
+                        // we need to check if the word entered = the word in the second slot
+                        //tv3.setText(text);
+                        // tv3.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.azure_blue));
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+
 
         star = findViewById(R.id.gold_star);
         star.setVisibility(View.GONE);
@@ -91,81 +125,6 @@ public class WordlyActivity extends AppCompatActivity {
             }
 
         });
-
-        /**
-        tv2.setOnClickListener(new View.OnClickListener() {
-=======
-
-
-        TextView tv2 = (TextView) findViewById(R.id.textView2);
-        TextView tv3 = (TextView) findViewById(R.id.textView3);
-        tv3.setOnClickListener(new View.OnClickListener() {
->>>>>>> dcd4594c653f54152181b70ca3bfab384108aee0
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(WordlyActivity.this);
-                builder.setTitle("Guess a word");
-
-                // Set up the input
-                final EditText input = new EditText(WordlyActivity.this);
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                builder.setView(input);
-
-                // Set up the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String text = input.getText().toString();
-                        // Do something with the text
-                        tv3.setText(text);
-                        tv3.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.azure_blue));
-
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
-            }
-        });
-        TextView tv2 = findViewById(R.id.textView2);
-        tv2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(WordlyActivity.this);
-                builder.setTitle("Guess a word");
-
-                // Set up the input
-                final EditText input = new EditText(WordlyActivity.this);
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                builder.setView(input);
-
-                // Set up the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String text = input.getText().toString();
-                        // Do something with the text
-                        tv2.setText(text);
-                        tv2.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.azure_blue));
-
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
-            }
-        });
-         */
 
         decorView = getWindow().getDecorView();
 
