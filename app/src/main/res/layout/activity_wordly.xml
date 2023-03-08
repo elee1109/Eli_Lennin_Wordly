@@ -25,6 +25,11 @@
         android:layout_height="300dp"
         android:layout_marginStart="52dp"
         android:layout_marginTop="192dp"
+        android:background="@drawable/img_view_border"
+        android:scaleType="centerCrop"
+        android:padding="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

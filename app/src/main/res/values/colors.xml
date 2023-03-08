@@ -10,4 +10,12 @@
     <color name="baby_blue">#89CFF0</color>
     <color name="cyan">#00B7EB</color>
     <color name="azure_blue">#007FFF</color>
+    <color name="navy_blue">#000080</color>
+    <color name="sapphire_blue">#0067A5</color>
+    <color name="dark_orange">#e56333</color>
+    <color name="light_blue">#1dade2</color>
+    <color name="dark_blue">#3389e5</color>
+    <color name="pearl">#FBFCF8</color>
+
+
 </resources>
