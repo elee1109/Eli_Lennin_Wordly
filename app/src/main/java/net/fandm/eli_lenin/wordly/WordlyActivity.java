@@ -91,12 +91,20 @@ public class WordlyActivity extends AppCompatActivity {
             }
 
         });
+
         /**
         tv2.setOnClickListener(new View.OnClickListener() {
+=======
+
+
+        TextView tv2 = (TextView) findViewById(R.id.textView2);
+        TextView tv3 = (TextView) findViewById(R.id.textView3);
+        tv3.setOnClickListener(new View.OnClickListener() {
+>>>>>>> dcd4594c653f54152181b70ca3bfab384108aee0
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(WordlyActivity.this);
-                builder.setTitle("Enter Text");
+                builder.setTitle("Guess a word");
 
                 // Set up the input
                 final EditText input = new EditText(WordlyActivity.this);
@@ -129,7 +137,7 @@ public class WordlyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(WordlyActivity.this);
-                builder.setTitle("Enter Text");
+                builder.setTitle("Guess a word");
 
                 // Set up the input
                 final EditText input = new EditText(WordlyActivity.this);
