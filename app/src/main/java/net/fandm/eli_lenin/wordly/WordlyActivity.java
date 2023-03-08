@@ -70,6 +70,7 @@ public class WordlyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        ImageHintExecutor ihe = new ImageHintExecutor();
         int currWordIndex = 1;
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_wordly);
@@ -77,6 +78,7 @@ public class WordlyActivity extends AppCompatActivity {
         iv.setImageResource(R.drawable.wordly);
         correct_path =  getIntent().getStringArrayListExtra("path");
         next_word = correct_path.get(1);
+
 
         waa = new wordArrayAdapter(this, R.layout.word_list_item, correct_path);
         GridView gv = findViewById(R.id.word_list);
@@ -101,6 +103,7 @@ public class WordlyActivity extends AppCompatActivity {
                         // we need to check if the word entered = the word in the second slot
                         //tv3.setText(text);
                         // tv3.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.azure_blue));
+
                         if (text.equals(next_word)) {
                             // correct
                             TextView tv = (TextView) view;
@@ -110,6 +113,24 @@ public class WordlyActivity extends AppCompatActivity {
 
                             waa.notifyDataSetChanged();
                             next_word = correct_path.get(currWordIndex + 1);
+                            ihe.execute(new ImageHintCallback() {
+                                @Override
+                                public void onComplete(ArrayList<Bitmap> images) {
+                                    Looper.prepare();
+                                    handler = new Handler(Looper.getMainLooper());
+
+                                    runOnUiThread(runnable = () -> {
+                                        iv.setImageBitmap(images.get(index));
+                                        index = (index + 1) % images.size();
+                                        handler.postDelayed(runnable, delay);
+                                    });
+                                    Looper.loop();
+                                    handler.postDelayed(runnable, delay);
+
+                                }
+                            });
+
+
 
 
                         } else {
@@ -133,15 +154,14 @@ public class WordlyActivity extends AppCompatActivity {
 
         star = findViewById(R.id.gold_star);
         star.setVisibility(View.GONE);
-        star.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Animator animator = AnimatorInflater.loadAnimator(getApplicationContext(), R.animator.star_animator);
-                animator.setTarget(star);
-                animator.start();
-            }
 
-        });
+        if(currWordIndex == correct_path.size() - 1) {
+            Animator animator = AnimatorInflater.loadAnimator(getApplicationContext(), R.animator.star_animator);
+            animator.setTarget(star);
+            animator.start();
+        }
+
+
 
         /**
         tv2.setOnClickListener(new View.OnClickListener() {
@@ -227,24 +247,9 @@ public class WordlyActivity extends AppCompatActivity {
         });
 
 
-        ImageHintExecutor ihe = new ImageHintExecutor();
-        ihe.execute(new ImageHintCallback() {
-            @Override
-            public void onComplete(ArrayList<Bitmap> images) {
-                Looper.prepare();
-                handler = new Handler(Looper.getMainLooper());
-
-                runOnUiThread(runnable= () -> {
-                    iv.setImageBitmap(images.get(index));
-                    index = (index+1)%images.size();
-                    handler.postDelayed(runnable, delay);
-                });
-                Looper.loop();
-                handler.postDelayed(runnable, delay);
-            }
 
 
-        });
+
 
         Button hint = findViewById(R.id.hint_button);
         hint.setOnClickListener(new View.OnClickListener() {
@@ -331,7 +336,7 @@ public class WordlyActivity extends AppCompatActivity {
                             Bitmap image = BitmapFactory.decodeByteArray(response, 0, response.length);
                             bitmap_images.add(image);
                         }
-
+                        Log.d("ImageHintExecutor", "Images: " + bitmap_images.size());
                         callback.onComplete(bitmap_images);
                     } catch (IOException e) {
                         Log.e("ImageHintExecutor", "IOException: " + e.getMessage());
