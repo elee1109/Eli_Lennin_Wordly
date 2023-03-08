@@ -2,6 +2,7 @@ package net.fandm.eli_lenin.wordly;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
@@ -87,8 +88,39 @@ public class WordlyActivity extends AppCompatActivity {
 
 
         TextView tv2 = (TextView) findViewById(R.id.textView2);
+        TextView tv3 = (TextView) findViewById(R.id.textView3);
+        tv2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(WordlyActivity.this);
+                builder.setTitle("Enter Text");
 
-        //tv2.setTextColor();
+                // Set up the input
+                final EditText input = new EditText(WordlyActivity.this);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                // Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String text = input.getText().toString();
+                        // Do something with the text
+                        tv3.setText(text);
+                        tv3.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.azure_blue));
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
 
         tv2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +140,8 @@ public class WordlyActivity extends AppCompatActivity {
                         String text = input.getText().toString();
                         // Do something with the text
                         tv2.setText(text);
-                        //tv2.setTextColor();
+                        tv2.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.azure_blue));
+
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
