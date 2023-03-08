@@ -130,13 +130,16 @@ public class WordlyActivity extends AppCompatActivity {
 
 
         star = findViewById(R.id.gold_star);
-        star.setVisibility(View.GONE);
+        //star.setVisibility(View.GONE);
         star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Animator animator = AnimatorInflater.loadAnimator(getApplicationContext(), R.animator.star_animator);
                 animator.setTarget(star);
                 animator.start();
+                Toast.makeText(getApplicationContext(), "CORRECT!!", Toast.LENGTH_LONG).show();
+
+
             }
 
         });
@@ -286,7 +289,6 @@ public class WordlyActivity extends AppCompatActivity {
         decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
-
 
     private void hideSystemUI() {
         decorView.setSystemUiVisibility(

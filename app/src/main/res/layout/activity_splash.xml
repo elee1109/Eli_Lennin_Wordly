@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_light"
+
     tools:context=".SplashActivity">
 
     <ImageView
         android:id="@+id/worldy"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/wordly"
-        android:scaleType="centerCrop"/>
+        android:src="@drawable/wordly_icon"
+        android:scaleType="center"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
