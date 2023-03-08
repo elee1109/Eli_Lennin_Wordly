@@ -1,11 +1,14 @@
 package net.fandm.eli_lenin.wordly;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -13,6 +16,7 @@ import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +24,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -86,6 +91,73 @@ public class WordlyActivity extends AppCompatActivity {
             }
 
         });
+        /**
+        tv2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(WordlyActivity.this);
+                builder.setTitle("Enter Text");
+
+                // Set up the input
+                final EditText input = new EditText(WordlyActivity.this);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                // Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String text = input.getText().toString();
+                        // Do something with the text
+                        tv3.setText(text);
+                        tv3.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.azure_blue));
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+        TextView tv2 = findViewById(R.id.textView2);
+        tv2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(WordlyActivity.this);
+                builder.setTitle("Enter Text");
+
+                // Set up the input
+                final EditText input = new EditText(WordlyActivity.this);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                // Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String text = input.getText().toString();
+                        // Do something with the text
+                        tv2.setText(text);
+                        tv2.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.azure_blue));
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
+         */
 
         decorView = getWindow().getDecorView();
 
@@ -97,19 +169,7 @@ public class WordlyActivity extends AppCompatActivity {
                 }
             }
         });
-    /**
-        ArrayAdapterExecutor aae = new ArrayAdapterExecutor();
-        aae.execute(new ArrayAdapterCallback() {
-            @Override
-            public void onComplete(ArrayAdapter<String> adapter) {
 
-                    GridView gv = findViewById(R.id.word_list);
-                    gv.setAdapter(adapter);
-                    Log.d("gv set adapter in onComplete", "ADAPTER SET");
-
-            }
-        });
-     */
 
         ImageHintExecutor ihe = new ImageHintExecutor();
         ihe.execute(new ImageHintCallback() {
@@ -136,32 +196,10 @@ public class WordlyActivity extends AppCompatActivity {
             }
         });
     }
-    interface ArrayAdapterCallback {
-        void onComplete(ArrayAdapter<String> adapter);
-    };
     interface ImageHintCallback {
         void onComplete(ArrayList<Bitmap> images);
     }
-    /**
-    public class ArrayAdapterExecutor{
-        public void execute(ArrayAdapterCallback callback) {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    waa = new wordArrayAdapter(getApplicationContext(), R.layout.word_list_item, correct_path);
-                    for (int i = 0; i < correct_path.size(); i++) {
-                        waa.add(correct_path.get(i));
-                        Log.d("waa add", correct_path.get(i));
-                    }
-                    callback.onComplete(waa);
 
-                }
-            });
-            thread.start();
-        }
-
-    }
-     */
     public class ImageHintExecutor {
         public void execute(ImageHintCallback callback) {
             Thread thread = new Thread(new Runnable() {
