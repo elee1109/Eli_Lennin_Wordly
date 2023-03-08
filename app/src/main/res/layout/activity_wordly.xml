@@ -70,7 +70,8 @@
             android:background="@drawable/bordered_textview"
             android:padding="5dp"
             android:text="Word"
-            android:textColor="@color/azure_blue"
+
+            android:textColor="@android:color/transparent"
             android:textSize="18sp" />
 
         <TextView
@@ -81,7 +82,7 @@
             android:background="@drawable/bordered_textview"
             android:padding="5dp"
             android:text="Word"
-            android:textColor="@color/azure_blue"
+            android:textColor="@android:color/transparent"
             android:textSize="18sp" />
 
         <TextView
