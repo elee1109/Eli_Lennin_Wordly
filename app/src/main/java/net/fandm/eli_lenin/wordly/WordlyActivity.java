@@ -89,11 +89,11 @@ public class WordlyActivity extends AppCompatActivity {
 
         TextView tv2 = (TextView) findViewById(R.id.textView2);
         TextView tv3 = (TextView) findViewById(R.id.textView3);
-        tv2.setOnClickListener(new View.OnClickListener() {
+        tv3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(WordlyActivity.this);
-                builder.setTitle("Enter Text");
+                builder.setTitle("Guess a word");
 
                 // Set up the input
                 final EditText input = new EditText(WordlyActivity.this);
@@ -126,7 +126,7 @@ public class WordlyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(WordlyActivity.this);
-                builder.setTitle("Enter Text");
+                builder.setTitle("Guess a word");
 
                 // Set up the input
                 final EditText input = new EditText(WordlyActivity.this);
