@@ -17,8 +17,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONArray;
@@ -50,27 +53,30 @@ public class WordlyActivity extends AppCompatActivity {
     public String next_word; //change when algo built
 
     public View decorView;
+    public wordArrayAdapter waa;
 
     ImageView star;
+
+    ArrayList<String> correct_path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_wordly);
-        ImageHintExecutor ihe = new ImageHintExecutor();
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
         iv.setImageResource(R.drawable.wordly);
-        ArrayList<String> correct_path =  getIntent().getStringArrayListExtra("path");
-        TextView tv1 = (TextView) findViewById(R.id.textView1);
-        TextView tv4 = (TextView) findViewById(R.id.textView4);
-        tv1.setText(correct_path.get(0));
-        tv4.setText(correct_path.get(correct_path.size()-1));
+        correct_path =  getIntent().getStringArrayListExtra("path");
         next_word = correct_path.get(1);
         Toast.makeText(getApplicationContext(), next_word, Toast.LENGTH_LONG).show();
+        waa = new wordArrayAdapter(this, R.layout.word_list_item, correct_path);
+        GridView gv = findViewById(R.id.word_list);
+        gv.setAdapter(waa);
+        waa.notifyDataSetChanged();
 
         star = findViewById(R.id.gold_star);
         star.setVisibility(View.GONE);
+
         star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,7 +86,6 @@ public class WordlyActivity extends AppCompatActivity {
             }
 
         });
-
 
         decorView = getWindow().getDecorView();
 
@@ -92,7 +97,21 @@ public class WordlyActivity extends AppCompatActivity {
                 }
             }
         });
+    /**
+        ArrayAdapterExecutor aae = new ArrayAdapterExecutor();
+        aae.execute(new ArrayAdapterCallback() {
+            @Override
+            public void onComplete(ArrayAdapter<String> adapter) {
 
+                    GridView gv = findViewById(R.id.word_list);
+                    gv.setAdapter(adapter);
+                    Log.d("gv set adapter in onComplete", "ADAPTER SET");
+
+            }
+        });
+     */
+
+        ImageHintExecutor ihe = new ImageHintExecutor();
         ihe.execute(new ImageHintCallback() {
             @Override
             public void onComplete(ArrayList<Bitmap> images) {
@@ -103,7 +122,6 @@ public class WordlyActivity extends AppCompatActivity {
                     iv.setImageBitmap(images.get(index));
                     index = (index+1)%images.size();
                     handler.postDelayed(runnable, delay);
-
                 });
                 Looper.loop();
                 handler.postDelayed(runnable, delay);
@@ -118,9 +136,32 @@ public class WordlyActivity extends AppCompatActivity {
             }
         });
     }
+    interface ArrayAdapterCallback {
+        void onComplete(ArrayAdapter<String> adapter);
+    };
     interface ImageHintCallback {
         void onComplete(ArrayList<Bitmap> images);
     }
+    /**
+    public class ArrayAdapterExecutor{
+        public void execute(ArrayAdapterCallback callback) {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    waa = new wordArrayAdapter(getApplicationContext(), R.layout.word_list_item, correct_path);
+                    for (int i = 0; i < correct_path.size(); i++) {
+                        waa.add(correct_path.get(i));
+                        Log.d("waa add", correct_path.get(i));
+                    }
+                    callback.onComplete(waa);
+
+                }
+            });
+            thread.start();
+        }
+
+    }
+     */
     public class ImageHintExecutor {
         public void execute(ImageHintCallback callback) {
             Thread thread = new Thread(new Runnable() {
@@ -155,12 +196,11 @@ public class WordlyActivity extends AppCompatActivity {
                         }
 
                         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                        Log.d("BufferedReader", in.toString());
+
                         String inputLine = null;
                         StringBuilder sb = new StringBuilder();
                         while ((inputLine = in.readLine()) != null) {
                             sb.append(inputLine);
-                            Log.d("Sb line", inputLine);
                         }
                         in.close();
                         JSONObject jsonObject = new JSONObject(sb.toString());
@@ -193,8 +233,6 @@ public class WordlyActivity extends AppCompatActivity {
                             byte[] response = out.toByteArray();
                             Bitmap image = BitmapFactory.decodeByteArray(response, 0, response.length);
                             bitmap_images.add(image);
-
-
                         }
 
 
