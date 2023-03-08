@@ -65,9 +65,12 @@ public class WordlyActivity extends AppCompatActivity {
 
     ArrayList<String> correct_path;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        int currWordIndex = 1;
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_wordly);
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
@@ -98,6 +101,21 @@ public class WordlyActivity extends AppCompatActivity {
                         // we need to check if the word entered = the word in the second slot
                         //tv3.setText(text);
                         // tv3.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.azure_blue));
+                        if (text.equals(next_word)) {
+                            // correct
+                            TextView tv = (TextView) view;
+                            Toast.makeText(getApplicationContext(), "Correct!", Toast.LENGTH_SHORT).show();
+                            Log.d(Integer.toString(currWordIndex), next_word);
+                            tv.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+
+                            waa.notifyDataSetChanged();
+                            next_word = correct_path.get(currWordIndex + 1);
+
+
+                        } else {
+                            // incorrect
+                            Toast.makeText(getApplicationContext(), "Incorrect!", Toast.LENGTH_SHORT).show();
+                        }
 
                     }
                 });
@@ -224,7 +242,10 @@ public class WordlyActivity extends AppCompatActivity {
                 Looper.loop();
                 handler.postDelayed(runnable, delay);
             }
+
+
         });
+
         Button hint = findViewById(R.id.hint_button);
         hint.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -310,8 +331,6 @@ public class WordlyActivity extends AppCompatActivity {
                             Bitmap image = BitmapFactory.decodeByteArray(response, 0, response.length);
                             bitmap_images.add(image);
                         }
-
-
 
                         callback.onComplete(bitmap_images);
                     } catch (IOException e) {

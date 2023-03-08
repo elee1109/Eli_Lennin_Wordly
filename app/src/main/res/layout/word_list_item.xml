@@ -8,7 +8,7 @@
     android:padding="8dp"
     android:layout_margin="8dp"
     android:gravity="center"
-    android:textColor="#777777"
+    android:textColor="@android:color/transparent"
     android:background="@drawable/bordered_textview"
     />
 

@@ -24,6 +24,9 @@ public class wordArrayAdapter extends ArrayAdapter<String> {
         this.words =resource;
 
     }
+    public void add(int position, String word) {
+        words.add(position, word);
+    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -40,6 +43,10 @@ public class wordArrayAdapter extends ArrayAdapter<String> {
         TextView textView = gridView.findViewById(R.id.word_textview);
         if(position == 0 || position == words.size()-1) {
 
+            textView.setText(words.get(position));
+            textView.setTextColor(context.getResources().getColor(R.color.black));
+        }
+        else {
             textView.setText(words.get(position));
         }
 
