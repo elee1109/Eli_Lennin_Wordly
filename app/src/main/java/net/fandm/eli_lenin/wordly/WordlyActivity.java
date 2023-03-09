@@ -8,6 +8,7 @@ import android.animation.AnimatorInflater;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -170,9 +171,6 @@ public class WordlyActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         Button hint = findViewById(R.id.hint_button);
         hint.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,12 +184,10 @@ public class WordlyActivity extends AppCompatActivity {
     private void executeStarAnimation(ImageView iv) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
             runOnUiThread(() -> {
+                MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.win_sound);
+                mp.start();
                 iv.setVisibility(View.GONE);
                 ImageView hint_background = findViewById(R.id.hint_background);
                 hint_background.setVisibility(View.GONE);
