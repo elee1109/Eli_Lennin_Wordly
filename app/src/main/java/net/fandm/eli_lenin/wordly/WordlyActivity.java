@@ -63,16 +63,50 @@ public class WordlyActivity extends AppCompatActivity {
 
     ArrayList<String> correct_path;
 
+    public int currWordIndex = 1;
+
+    boolean stopOnCreateLooper = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        int currWordIndex = 1;
+
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_wordly);
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
         iv.setImageResource(R.drawable.wordly_icon);
+
+
+        ImageHintExecutor ihe = new ImageHintExecutor();
+        ihe.execute(new ImageHintCallback() {
+            @Override
+            public void onComplete(ArrayList<Bitmap> images) {
+                    if(stopOnCreateLooper){
+                        Looper.getMainLooper().quit();
+                    }
+                    else{
+                        Looper.prepare();
+                        handler = new Handler(Looper.getMainLooper());
+
+                        runOnUiThread(runnable = () -> {
+                            iv.setImageBitmap(images.get(index));
+                            index = (index + 1) % images.size();
+                            handler.postDelayed(runnable, delay);
+                        });
+                        Looper.loop();
+                        handler.postDelayed(runnable, delay);
+
+                    }
+
+
+            }
+
+
+        });
+
         correct_path =  getIntent().getStringArrayListExtra("path");
         next_word = correct_path.get(1);
 
@@ -103,11 +137,38 @@ public class WordlyActivity extends AppCompatActivity {
                             // correct
                             TextView tv = (TextView) view;
                             Toast.makeText(getApplicationContext(), "Correct!", Toast.LENGTH_SHORT).show();
-                            Log.d(Integer.toString(currWordIndex), next_word);
+                            Log.d("before incr: " + Integer.toString(currWordIndex), next_word);
                             tv.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
 
                             waa.notifyDataSetChanged();
-                            next_word = correct_path.get(currWordIndex + 1);
+                            currWordIndex++;
+                            next_word = correct_path.get(currWordIndex);
+                            stopOnCreateLooper = true;
+                            Looper.getMainLooper().quit();
+                            ihe.execute(new ImageHintCallback() {
+                            @Override
+                            public void onComplete(ArrayList<Bitmap> images) {
+
+                                    Looper.prepare();
+                                    handler = new Handler(Looper.getMainLooper());
+
+                                    runOnUiThread(runnable = () -> {
+                                        iv.setImageBitmap(images.get(index));
+                                        index = (index + 1) % images.size();
+                                        handler.postDelayed(runnable, delay);
+                                    });
+                                    Looper.loop();
+                                    handler.postDelayed(runnable, delay);
+
+                                }
+                            });
+
+                            Log.d("after incr: " + Integer.toString(currWordIndex), next_word);
+
+                            if (currWordIndex == correct_path.size() - 1) {
+                                Toast.makeText(getApplicationContext(), "You win!", Toast.LENGTH_LONG).show();
+                                finish();
+                            }
 
 
                         } else {
@@ -156,24 +217,7 @@ public class WordlyActivity extends AppCompatActivity {
         });
 
 
-        ImageHintExecutor ihe = new ImageHintExecutor();
-        ihe.execute(new ImageHintCallback() {
-            @Override
-            public void onComplete(ArrayList<Bitmap> images) {
-                Looper.prepare();
-                handler = new Handler(Looper.getMainLooper());
 
-                runOnUiThread(runnable= () -> {
-                    iv.setImageBitmap(images.get(index));
-                    index = (index+1)%images.size();
-                    handler.postDelayed(runnable, delay);
-                });
-                Looper.loop();
-                handler.postDelayed(runnable, delay);
-            }
-
-
-        });
 
         Button hint = findViewById(R.id.hint_button);
         hint.setOnClickListener(new View.OnClickListener() {
