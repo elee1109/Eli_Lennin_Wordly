@@ -1,7 +1,6 @@
 package net.fandm.eli_lenin.wordly;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -10,20 +9,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -47,14 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             words = readWordsFromFile();
-            Thread thread2 = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    graph.buildGraph(words);
-                }
-            });
-            thread2.start();
-            createPuzzle();  //when app boots up create new puzzle
+            createGraph();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -125,41 +113,59 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void createPuzzle(){
-        Thread thread = new Thread(new Runnable() {
+    public void createGraph(){
+        graphExecutor ge = new graphExecutor();
+        ge.execute(new graphExecutorCallback() {
             @Override
-            public void run() {
-                String[] randomWords = selectRandomWords(words);
-                String startWord = randomWords[0];
-                String endWord = randomWords[1];
-
-                ArrayList<String> path = graph.shortestPath(startWord, endWord);
-                if (path == null) {
-
-                    sendPath = null;
-
-                } else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            EditText word1 = findViewById(R.id.start_word);
-                            EditText word2 = findViewById(R.id.end_word);
-                            word1.setText(randomWords[0]);
-                            word2.setText(randomWords[1]);
-                            sendPath = path;
-                        }
-                    });
-
-
-
-                }
-
+            public void onGraphCreated(Graph graph) {
+                Log.d("graph", "graph created");
+                createPuzzle();
             }
         });
-        thread.start();
+    }
+    interface graphExecutorCallback{
+        void onGraphCreated(Graph graph);
+    }
+    public class graphExecutor {
+        public void execute(graphExecutorCallback callback){
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    graph.buildGraph(words);
+                    callback.onGraphCreated(graph);
+                }
+            });
+        }
+    }
+
+    public void createPuzzle(){
+
+            String[] randomWords = selectRandomWords(words);
+            String startWord = randomWords[0];
+            String endWord = randomWords[1];
 
 
+            ArrayList<String> path = graph.shortestPath(startWord, endWord);
+            if (path == null) {
 
+                sendPath = null;
+
+            } else {
+                Log.d("HIT", "HIT, EDIT TEXTS SHOULD BE SET");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        EditText word1 = findViewById(R.id.start_word);
+                        EditText word2 = findViewById(R.id.end_word);
+                        word1.setText(randomWords[0]);
+                        word2.setText(randomWords[1]);
+                        sendPath = path;
+                    }
+                });
+
+
+            }
 
 
     }
