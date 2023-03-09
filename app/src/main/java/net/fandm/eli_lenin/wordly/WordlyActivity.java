@@ -42,6 +42,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class WordlyActivity extends AppCompatActivity {
@@ -83,6 +84,7 @@ public class WordlyActivity extends AppCompatActivity {
         ihe.execute(new ImageHintCallback() {
             @Override
             public void onComplete(ArrayList<Bitmap> images) {
+
                     Looper.prepare();
                     handler = new Handler(Looper.getMainLooper());
 
@@ -116,11 +118,18 @@ public class WordlyActivity extends AppCompatActivity {
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(input);
 
+
                 // Set up the buttons
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                         String text = input.getText().toString();
+                        text.toLowerCase(Locale.ROOT);
+                        if(text.charAt(text.length()-1) == ' '){ //gets rids of trailing space
+                            text = text.substring(0, text.length()-1);
+                        }
+
                         // we need to check if the word entered = the word in the second slot
                         //tv3.setText(text);
                         // tv3.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.azure_blue));
@@ -128,7 +137,7 @@ public class WordlyActivity extends AppCompatActivity {
                             // correct
                             TextView tv = (TextView) view;
                             Toast.makeText(getApplicationContext(), "Correct!", Toast.LENGTH_SHORT).show();
-                            Log.d("before incr: " + Integer.toString(currWordIndex), next_word);
+
                             tv.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
 
                             waa.notifyDataSetChanged();
