@@ -9,54 +9,62 @@
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:columnCount="4"
-        android:rowCount="5"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="50dp"
-        android:layout_marginLeft="50dp"
+        android:layout_height="match_parent">
 
-        >
-        <EditText
-            android:id="@+id/start_word"
+        <GridLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="0"
-            android:hint="enter word"
-            android:inputType="text"
-            />
-        <EditText
-            android:id="@+id/end_word"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="2"
-            android:layout_row="0"
-            android:hint="enter word"
-            android:inputType="text"
-            />
-        <Button
-            android:id="@+id/new_puzzle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_row="2"
-            android:text="New Puzzle"
-            />
-
-        <Button
-            android:id="@+id/Play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_row="3"
-            android:layout_column="1"
+            android:layout_height="441dp"
             android:layout_gravity="center"
-            android:text="Play" />
+            android:columnCount="4"
+            android:padding="16dp"
+            android:rowCount="5"
+            android:verticalSpacing="8dp">
 
-    </GridLayout>
+            <EditText
+                android:id="@+id/start_word"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:hint="enter word"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/end_word"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:hint="enter word"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/new_puzzle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="2"
+                android:layout_column="1"
+                android:layout_columnWeight="2"
+                android:layout_margin="16dp"
+                android:background="@drawable/main_buttons"
+
+                android:text="New Puzzle"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/Play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="3"
+                android:layout_column="1"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:background="@drawable/main_buttons"
+                android:text="Play"
+
+                android:textColor="@color/white" />
+
+        </GridLayout>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
