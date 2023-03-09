@@ -118,10 +118,11 @@ public class WordlyActivity extends AppCompatActivity {
                         }
 
 
-                        if (text.equals(correct_path.get(i))) {
+                        if (text.equals(correct_path.get(i)) ) {
                             // correct
                             TextView tv = (TextView) view;
-                            Toast.makeText(getApplicationContext(), "Correct!", Toast.LENGTH_SHORT).show();
+
+                            if(currWordIndex!= correct_path.size()-2) Toast.makeText(getApplicationContext(), "Correct!", Toast.LENGTH_SHORT).show();
 
                             tv.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
 
@@ -186,6 +187,7 @@ public class WordlyActivity extends AppCompatActivity {
         executor.execute(() -> {
 
             runOnUiThread(() -> {
+                //sound found on pixabay: https://pixabay.com/sound-effects/search/yay/
                 MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.win_sound);
                 mp.start();
                 iv.setVisibility(View.GONE);
@@ -195,7 +197,7 @@ public class WordlyActivity extends AppCompatActivity {
                 Animator animator = AnimatorInflater.loadAnimator(getApplicationContext(), R.animator.star_animator);
                 animator.setTarget(star);
                 animator.start();
-                Toast.makeText(getApplicationContext(), "CORRECT!!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "YOU WONNNNNNN!!!!", Toast.LENGTH_LONG).show();
             });
         });
 
