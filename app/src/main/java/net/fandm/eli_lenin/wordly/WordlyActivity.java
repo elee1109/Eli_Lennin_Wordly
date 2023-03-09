@@ -72,7 +72,7 @@ public class WordlyActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_wordly);
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
-        iv.setImageResource(R.drawable.wordly);
+        iv.setImageResource(R.drawable.wordly_icon);
         correct_path =  getIntent().getStringArrayListExtra("path");
         next_word = correct_path.get(1);
 
