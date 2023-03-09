@@ -47,6 +47,7 @@
                 android:layout_columnWeight="2"
                 android:layout_margin="16dp"
                 android:background="@drawable/main_buttons"
+                android:foreground="?attr/selectableItemBackground"
 
                 android:text="New Puzzle"
                 android:textColor="@color/white" />
@@ -61,6 +62,7 @@
                 android:layout_margin="16dp"
                 android:background="@drawable/main_buttons"
                 android:text="Play"
+                android:foreground="?attr/selectableItemBackground"
 
                 android:textColor="@color/white" />
 

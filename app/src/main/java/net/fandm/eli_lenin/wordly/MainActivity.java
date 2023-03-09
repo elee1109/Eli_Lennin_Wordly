@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     sendPath = potentialPath;
-                    Toast.makeText(MainActivity.this, "Path found", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), WordlyActivity.class);
                     Log.d("sendPath", sendPath.toString());
 
@@ -119,25 +118,20 @@ public class MainActivity extends AppCompatActivity {
         String[] randomWords = selectRandomWords(words);
         String startWord = randomWords[0];
         String endWord = randomWords[1];
-        String toast = "Word 1: " + randomWords[0] + " Word 2: " + randomWords[1];
-        Toast.makeText(MainActivity.this, toast, Toast.LENGTH_SHORT).show();
         Graph graph = new Graph();
         graph.buildGraph(words);
         ArrayList<String> path = graph.shortestPath(startWord, endWord);
-        Log.d("path", path.toString());
         if (path == null) {
             Toast.makeText(MainActivity.this, "No path found", Toast.LENGTH_SHORT).show();
             sendPath = null;
 
         } else {
-            Toast.makeText(MainActivity.this, "Path found", Toast.LENGTH_SHORT).show();
             EditText word1 = findViewById(R.id.start_word);
             EditText word2 = findViewById(R.id.end_word);
             word1.setText(randomWords[0]);
             word2.setText(randomWords[1]);
+
             sendPath = path;
-
-
         }
 
 
