@@ -5,14 +5,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="Wordly is a word game where the player is given a start word and an end word (or they can input their own). The goal is to transform the start word into the end word by changing one letter at a time, with each intermediate word being a valid word in the English language. For example, if the start word is cat and the end word is dog, the player could change cat to cot, then dot, then dog. The game can be played individually or with others, with the player or team who reaches the end word with the fewest number of moves being the winner."
         android:id="@+id/textView_tutorial"
+        android:layout_width="337dp"
+        android:layout_height="225dp"
+        android:text="Welcome to Wordly! The goal is to transform the start word into the end word by changing one letter at a time, with each intermediate word being a valid word in the English language. For example, if the start word is cat and the end word is dog, the player could change cat to cot, then dot, then dog. The game can be played individually or with others, with the player or team who reaches the end word with the fewest number of moves being the winner."
+        android:textColor="@color/white"
         app:borderWidth="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.905" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
