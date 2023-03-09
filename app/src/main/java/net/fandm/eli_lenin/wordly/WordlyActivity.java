@@ -176,7 +176,23 @@ public class WordlyActivity extends AppCompatActivity {
         hint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Hint!", Toast.LENGTH_LONG).show();
+                if(next_word != null){
+                    String hint = "";
+                    String currWord = correct_path.get(currWordIndex -1);
+                    //since the graph exists in the main activity this is a more straightforward method of obtaining hint.
+                    for (int i =0; i < currWord.length(); i++){
+                        if(currWord.charAt(i) != next_word.charAt(i)){
+                            hint = String.valueOf(next_word.charAt(i));
+                            break;
+
+                        }
+                    }
+                    Toast.makeText(getApplicationContext(), hint, Toast.LENGTH_SHORT).show();
+
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "no hint 4 u >:3", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -198,6 +214,13 @@ public class WordlyActivity extends AppCompatActivity {
                 animator.setTarget(star);
                 animator.start();
                 Toast.makeText(getApplicationContext(), "YOU WONNNNNNN!!!!", Toast.LENGTH_LONG).show();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                mp.stop();
+
             });
         });
 
