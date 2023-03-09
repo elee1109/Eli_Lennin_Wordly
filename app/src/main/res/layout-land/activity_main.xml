@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_light"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <GridLayout
+        android:layout_width="642dp"
+        android:layout_height="285dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="86dp"
+
+        android:layout_marginBottom="50dp"
+        android:columnCount="4"
+        android:rowCount="5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/start_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:hint="enter word"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/end_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:hint="enter word"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/new_puzzle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="1"
+            android:text="New Puzzle" />
+
+        <Button
+            android:id="@+id/Play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="1"
+            android:layout_gravity="center"
+            android:text="Play" />
+
+    </GridLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
