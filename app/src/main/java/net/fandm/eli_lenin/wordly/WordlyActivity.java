@@ -213,17 +213,24 @@ public class WordlyActivity extends AppCompatActivity {
         ihe.execute(new ImageHintCallback() {
             @Override
             public void onComplete(ArrayList<Bitmap> images) {
+                if(images != null) {
 
-                Looper.prepare();
-                handler = new Handler(looper);
 
-                runOnUiThread(runnable = () -> {
-                    iv.setImageBitmap(images.get(index));
-                    index = (index + 1) % images.size();
+                    Looper.prepare();
+                    handler = new Handler(looper);
+
+                    runOnUiThread(runnable = () -> {
+                        iv.setImageBitmap(images.get(index));
+                        index = (index + 1) % images.size();
+                        handler.postDelayed(runnable, delay);
+                    });
+                    Looper.loop();
                     handler.postDelayed(runnable, delay);
-                });
-                Looper.loop();
-                handler.postDelayed(runnable, delay);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "No images found :(", Toast.LENGTH_SHORT).show();
+                    iv.setImageResource(R.drawable.wordly_icon);
+                }
             }
 
 
@@ -264,6 +271,11 @@ public class WordlyActivity extends AppCompatActivity {
                         in.close();
                         JSONObject jsonObject = new JSONObject(sb.toString());
                         Log.d("JSON", jsonObject.toString());
+                        if (jsonObject.getInt("totalHits") == 0) {
+                            Log.d("NO RESULTS", "NO RESULTS");
+                            callback.onComplete(null);
+
+                        }
 
                         JSONArray jsonArray = jsonObject.getJSONArray("hits");
                         ArrayList<Bitmap> bitmap_images = new ArrayList<>();
