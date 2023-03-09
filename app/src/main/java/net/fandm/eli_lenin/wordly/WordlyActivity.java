@@ -60,8 +60,11 @@ public class WordlyActivity extends AppCompatActivity {
     public wordArrayAdapter waa;
 
     ImageView star;
+    private int currWordIndex = 1;
 
     ArrayList<String> correct_path;
+
+    boolean stopOnCreateLooper = false;
 
 
     @Override
@@ -69,11 +72,34 @@ public class WordlyActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         ImageHintExecutor ihe = new ImageHintExecutor();
-        int currWordIndex = 1;
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_wordly);
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
         iv.setImageResource(R.drawable.wordly);
+        Looper onCreateLooper = Looper.myLooper();
+        ihe.execute(new ImageHintCallback() {
+
+            @Override
+            public void onComplete(ArrayList<Bitmap> images) {
+                if (stopOnCreateLooper) {
+                    onCreateLooper.quit();
+                }
+                Looper.prepare();
+                handler = new Handler(onCreateLooper);
+
+                runOnUiThread(runnable = () -> {
+                    iv.setImageBitmap(images.get(index));
+                    index = (index + 1) % images.size();
+                    handler.postDelayed(runnable, delay);
+                });
+                Looper.loop();
+                handler.postDelayed(runnable, delay);
+
+            }
+        });
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_wordly);
+
+
         correct_path =  getIntent().getStringArrayListExtra("path");
         next_word = correct_path.get(1);
 
@@ -111,6 +137,8 @@ public class WordlyActivity extends AppCompatActivity {
 
                             waa.notifyDataSetChanged();
                             next_word = correct_path.get(currWordIndex + 1);
+                            currWordIndex++;
+                            stopOnCreateLooper = true;
                             ihe.execute(new ImageHintCallback() {
                                 @Override
                                 public void onComplete(ArrayList<Bitmap> images) {
