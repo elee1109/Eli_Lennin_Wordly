@@ -104,8 +104,13 @@ public class WordlyActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        String text = input.getText().toString();
-                        text.toLowerCase(Locale.ROOT);
+
+                        String text = input.getText().toString().trim().toLowerCase(Locale.ROOT);
+                        if (text.isEmpty()) {
+                            Toast.makeText(getApplicationContext(), "Please enter a word", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
                         if(text.charAt(text.length()-1) == ' '){ //gets rids of trailing space
                             text = text.substring(0, text.length()-1);
                         }
