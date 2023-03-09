@@ -78,27 +78,7 @@ public class WordlyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_wordly);
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
         iv.setImageResource(R.drawable.wordly_icon);
-
-
-        ImageHintExecutor ihe = new ImageHintExecutor();
-        ihe.execute(new ImageHintCallback() {
-            @Override
-            public void onComplete(ArrayList<Bitmap> images) {
-
-                    Looper.prepare();
-                    handler = new Handler(Looper.getMainLooper());
-
-                    runOnUiThread(runnable = () -> {
-                        iv.setImageBitmap(images.get(index));
-                        index = (index + 1) % images.size();
-                        handler.postDelayed(runnable, delay);
-                    });
-                    Looper.loop();
-                    handler.postDelayed(runnable, delay);
-            }
-
-
-        });
+        getNewImages(iv);
 
         correct_path =  getIntent().getStringArrayListExtra("path");
         next_word = correct_path.get(1);
@@ -143,6 +123,7 @@ public class WordlyActivity extends AppCompatActivity {
                             waa.notifyDataSetChanged();
                             currWordIndex++;
                             next_word = correct_path.get(currWordIndex);
+                            getNewImages(iv);
 
                             Log.d("after incr: " + Integer.toString(currWordIndex), next_word);
 
@@ -208,6 +189,30 @@ public class WordlyActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void getNewImages(ImageView iv) {
+        ImageHintExecutor ihe = new ImageHintExecutor();
+        ihe.execute(new ImageHintCallback() {
+            @Override
+            public void onComplete(ArrayList<Bitmap> images) {
+
+
+                Looper.prepare();
+                handler = new Handler(Looper.getMainLooper());
+
+                runOnUiThread(runnable = () -> {
+                    iv.setImageBitmap(images.get(index));
+                    index = (index + 1) % images.size();
+                    handler.postDelayed(runnable, delay);
+                });
+                Looper.loop();
+                handler.postDelayed(runnable, delay);
+            }
+
+
+        });
+    }
+
     interface ImageHintCallback {
         void onComplete(ArrayList<Bitmap> images);
     }
@@ -227,10 +232,11 @@ public class WordlyActivity extends AppCompatActivity {
                         // Build the URL object
                         //found this using a combination of this video: https://www.youtube.com/watch?v=1Q9QZ4Y6zqU
 
-                        URL pixabay_url = new URL("https://pixabay.com/api/?key=34157164-7fb926e23417bdc9eb71940cc&q="+next_word+"&image_type=photo&pretty=true");
+                        URL pixabay_url = new URL("https://pixabay.com/api/?key=34157164-7fb926e23417bdc9eb71940cc&q="+next_word+"&image_type=photo");
                         HttpURLConnection conn = (HttpURLConnection) pixabay_url.openConnection();
                         conn.setRequestMethod("GET");
                         conn.connect();
+
 
 
                         int responsecode = conn.getResponseCode();
