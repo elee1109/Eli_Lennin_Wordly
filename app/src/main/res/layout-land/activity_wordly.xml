@@ -17,14 +17,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.748" />
+        app:layout_constraintVertical_bias="0.791" />
 
     <ImageView
         android:id="@+id/hint_image"
         android:layout_width="254dp"
         android:layout_height="211dp"
         android:layout_marginStart="236dp"
-        android:layout_marginTop="136dp"
+        android:layout_marginTop="156dp"
         android:background="@drawable/img_view_border"
         android:padding="8dp"
         android:paddingLeft="8dp"
@@ -46,23 +46,19 @@
 
     <GridView
         android:id="@+id/word_list"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="56dp"
         android:background="@color/baby_blue"
-        android:columnWidth="100dp"
+        android:columnWidth="50dp"
         android:elevation="5dp"
         android:gravity="center"
-        android:horizontalSpacing="16dp"
-        android:numColumns="4"
+        android:horizontalSpacing="8dp"
+        android:numColumns="5"
         android:orientation="horizontal"
-        android:padding="16dp"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:padding="8dp"
+        android:verticalSpacing="8dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="30dp">
 
     </GridView>
 
