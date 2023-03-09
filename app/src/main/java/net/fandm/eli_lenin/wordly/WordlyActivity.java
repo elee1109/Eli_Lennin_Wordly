@@ -47,22 +47,16 @@ public class WordlyActivity extends AppCompatActivity {
      */
     private Handler handler;
     public Runnable runnable;
-
     private final int delay = 2000;
+
     public int index =0;
     public String next_word; //change when algo built
-
     public View decorView;
     public wordArrayAdapter waa;
-
     ImageView star;
 
     ArrayList<String> correct_path;
-
     public int currWordIndex = 1;
-
-
-
     Thread iheThread;
 
 
@@ -201,12 +195,10 @@ public class WordlyActivity extends AppCompatActivity {
     private void executeStarAnimation(ImageView iv) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-
+            handler.removeCallbacks(runnable);
             runOnUiThread(() -> {
                 //sound found on pixabay: https://pixabay.com/sound-effects/search/yay/
-                MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.win_sound);
-                mp.release();
-                mp.start();
+
                 iv.setVisibility(View.GONE);
                 ImageView hint_background = findViewById(R.id.hint_background);
                 hint_background.setVisibility(View.GONE);
@@ -219,7 +211,10 @@ public class WordlyActivity extends AppCompatActivity {
 
 
 
+
+
             });
+
         });
 
 
@@ -235,7 +230,7 @@ public class WordlyActivity extends AppCompatActivity {
         ihe.execute(new ImageHintCallback() {
             @Override
             public void onComplete(ArrayList<Bitmap> images) {
-                if(images != null) {
+                if(images != null || images.size() != 0){
 
 
                     Looper.prepare();
@@ -249,10 +244,7 @@ public class WordlyActivity extends AppCompatActivity {
                     Looper.loop();
                     handler.postDelayed(runnable, delay);
                 }
-                else{
-                    Toast.makeText(getApplicationContext(), "No images found :(", Toast.LENGTH_SHORT).show();
-                    iv.setImageResource(R.drawable.wordly_icon);
-                }
+
             }
 
 
@@ -361,6 +353,12 @@ public class WordlyActivity extends AppCompatActivity {
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
                 View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
+    protected void onDestory(){
+        super.onDestroy();
+        iheThread.interrupt();
+
+
+    }
 
     private void hideSystemUI() {
         decorView.setSystemUiVisibility(
@@ -371,6 +369,7 @@ public class WordlyActivity extends AppCompatActivity {
                         View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
                         View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
+
 
 
 
