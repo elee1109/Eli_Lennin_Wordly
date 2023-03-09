@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<String> readWordsFromFile() throws IOException {
 
         ArrayList<String> words = new ArrayList<>();
-        InputStream inputStream = getResources().openRawResource(R.raw.words_simple);
+        InputStream inputStream = getResources().openRawResource(R.raw.words_gwicks);
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
         String line;
         while ((line = br.readLine()) != null) {
@@ -185,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
                 words.add(line);
             }
         }
+
         br.close();
 
         return words;

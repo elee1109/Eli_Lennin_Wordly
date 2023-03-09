@@ -61,7 +61,7 @@ public class WordlyActivity extends AppCompatActivity {
 
     public int currWordIndex = 1;
 
-    public Looper looper = Looper.getMainLooper();
+
 
     Thread iheThread;
 
@@ -205,6 +205,7 @@ public class WordlyActivity extends AppCompatActivity {
             runOnUiThread(() -> {
                 //sound found on pixabay: https://pixabay.com/sound-effects/search/yay/
                 MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.win_sound);
+                mp.release();
                 mp.start();
                 iv.setVisibility(View.GONE);
                 ImageView hint_background = findViewById(R.id.hint_background);
@@ -214,12 +215,9 @@ public class WordlyActivity extends AppCompatActivity {
                 animator.setTarget(star);
                 animator.start();
                 Toast.makeText(getApplicationContext(), "YOU WONNNNNNN!!!!", Toast.LENGTH_LONG).show();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                mp.stop();
+
+
+
 
             });
         });
@@ -241,7 +239,7 @@ public class WordlyActivity extends AppCompatActivity {
 
 
                     Looper.prepare();
-                    handler = new Handler(looper);
+                    handler = new Handler(Looper.getMainLooper());
 
                     runOnUiThread(runnable = () -> {
                         iv.setImageBitmap(images.get(index));
