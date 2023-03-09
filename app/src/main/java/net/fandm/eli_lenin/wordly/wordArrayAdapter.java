@@ -1,17 +1,12 @@
 package net.fandm.eli_lenin.wordly;
 
-import android.accessibilityservice.AccessibilityService;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
 
 public class wordArrayAdapter extends ArrayAdapter<String> {
@@ -45,6 +40,7 @@ public class wordArrayAdapter extends ArrayAdapter<String> {
 
             textView.setText(words.get(position));
             textView.setTextColor(context.getResources().getColor(R.color.black));
+
         }
         else {
             textView.setText(words.get(position));

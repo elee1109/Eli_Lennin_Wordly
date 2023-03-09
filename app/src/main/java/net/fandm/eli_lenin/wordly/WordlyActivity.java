@@ -3,26 +3,19 @@ package net.fandm.eli_lenin.wordly;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
-import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.InputType;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.EditText;
@@ -32,7 +25,6 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -43,6 +35,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class WordlyActivity extends AppCompatActivity {
@@ -66,6 +60,10 @@ public class WordlyActivity extends AppCompatActivity {
 
     public int currWordIndex = 1;
 
+    public Looper looper = Looper.getMainLooper();
+
+    Thread iheThread;
+
 
 
     @Override
@@ -79,6 +77,7 @@ public class WordlyActivity extends AppCompatActivity {
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
         iv.setImageResource(R.drawable.wordly_icon);
         getNewImages(iv);
+        star = findViewById(R.id.gold_star);
 
         correct_path =  getIntent().getStringArrayListExtra("path");
         next_word = correct_path.get(1);
@@ -128,12 +127,20 @@ public class WordlyActivity extends AppCompatActivity {
                             waa.notifyDataSetChanged();
                             currWordIndex++;
                             next_word = correct_path.get(currWordIndex);
+                            // Define a new thread
+
+
+
+                            // Start the thread
                             getNewImages(iv);
+
+
 
                             Log.d("after incr: " + Integer.toString(currWordIndex), next_word);
 
                             if (currWordIndex == correct_path.size() - 1) {
-                                Toast.makeText(getApplicationContext(), "You win!", Toast.LENGTH_LONG).show();
+                                executeStarAnimation(iv);
+
                             }
 
 
@@ -153,22 +160,6 @@ public class WordlyActivity extends AppCompatActivity {
 
                 builder.show();
             }
-        });
-
-
-        star = findViewById(R.id.gold_star);
-        //star.setVisibility(View.GONE);
-        star.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Animator animator = AnimatorInflater.loadAnimator(getApplicationContext(), R.animator.star_animator);
-                animator.setTarget(star);
-                animator.start();
-                Toast.makeText(getApplicationContext(), "CORRECT!!", Toast.LENGTH_LONG).show();
-
-
-            }
-
         });
 
         decorView = getWindow().getDecorView();
@@ -195,15 +186,35 @@ public class WordlyActivity extends AppCompatActivity {
         });
     }
 
+    private void executeStarAnimation(ImageView iv) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            runOnUiThread(() -> {
+                iv.setVisibility(View.GONE);
+                star.setVisibility(View.VISIBLE);
+                Animator animator = AnimatorInflater.loadAnimator(getApplicationContext(), R.animator.star_animator);
+                animator.setTarget(star);
+                animator.start();
+                Toast.makeText(getApplicationContext(), "CORRECT!!", Toast.LENGTH_LONG).show();
+            });
+        });
+
+
+    }
+
     private void getNewImages(ImageView iv) {
         ImageHintExecutor ihe = new ImageHintExecutor();
         ihe.execute(new ImageHintCallback() {
             @Override
             public void onComplete(ArrayList<Bitmap> images) {
 
-
                 Looper.prepare();
-                handler = new Handler(Looper.getMainLooper());
+                handler = new Handler(looper);
 
                 runOnUiThread(runnable = () -> {
                     iv.setImageBitmap(images.get(index));
@@ -225,7 +236,7 @@ public class WordlyActivity extends AppCompatActivity {
 
     public class ImageHintExecutor {
         public void execute(ImageHintCallback callback) {
-            Thread thread = new Thread(new Runnable() {
+             iheThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -308,7 +319,7 @@ public class WordlyActivity extends AppCompatActivity {
 
                 }
             });
-            thread.start();
+            iheThread.start();
         }
     }
 
