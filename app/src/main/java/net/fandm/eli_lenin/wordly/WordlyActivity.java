@@ -65,7 +65,6 @@ public class WordlyActivity extends AppCompatActivity {
 
     public int currWordIndex = 1;
 
-    boolean stopOnCreateLooper = false;
 
 
     @Override
@@ -84,24 +83,16 @@ public class WordlyActivity extends AppCompatActivity {
         ihe.execute(new ImageHintCallback() {
             @Override
             public void onComplete(ArrayList<Bitmap> images) {
-                    if(stopOnCreateLooper){
-                        Looper.getMainLooper().quit();
-                    }
-                    else{
-                        Looper.prepare();
-                        handler = new Handler(Looper.getMainLooper());
+                    Looper.prepare();
+                    handler = new Handler(Looper.getMainLooper());
 
-                        runOnUiThread(runnable = () -> {
-                            iv.setImageBitmap(images.get(index));
-                            index = (index + 1) % images.size();
-                            handler.postDelayed(runnable, delay);
-                        });
-                        Looper.loop();
+                    runOnUiThread(runnable = () -> {
+                        iv.setImageBitmap(images.get(index));
+                        index = (index + 1) % images.size();
                         handler.postDelayed(runnable, delay);
-
-                    }
-
-
+                    });
+                    Looper.loop();
+                    handler.postDelayed(runnable, delay);
             }
 
 
@@ -143,31 +134,11 @@ public class WordlyActivity extends AppCompatActivity {
                             waa.notifyDataSetChanged();
                             currWordIndex++;
                             next_word = correct_path.get(currWordIndex);
-                            stopOnCreateLooper = true;
-                            Looper.getMainLooper().quit();
-                            ihe.execute(new ImageHintCallback() {
-                            @Override
-                            public void onComplete(ArrayList<Bitmap> images) {
-
-                                    Looper.prepare();
-                                    handler = new Handler(Looper.getMainLooper());
-
-                                    runOnUiThread(runnable = () -> {
-                                        iv.setImageBitmap(images.get(index));
-                                        index = (index + 1) % images.size();
-                                        handler.postDelayed(runnable, delay);
-                                    });
-                                    Looper.loop();
-                                    handler.postDelayed(runnable, delay);
-
-                                }
-                            });
 
                             Log.d("after incr: " + Integer.toString(currWordIndex), next_word);
 
                             if (currWordIndex == correct_path.size() - 1) {
                                 Toast.makeText(getApplicationContext(), "You win!", Toast.LENGTH_LONG).show();
-                                finish();
                             }
 
 
