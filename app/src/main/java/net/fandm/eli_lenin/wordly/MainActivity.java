@@ -69,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
                 if(potentialPath == null){
                     Toast.makeText(MainActivity.this, "No path found", Toast.LENGTH_SHORT).show();
                 }
+                else if(potentialPath.size() > 8){
+                    Toast.makeText(MainActivity.this, "Path too long", Toast.LENGTH_SHORT).show();
+                }
                 else if(potentialPath.size() == 1){
                     Toast.makeText(MainActivity.this, "Start and end words are the same", Toast.LENGTH_SHORT).show();
                 }
@@ -96,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Check if the "firstTime" flag is set
         if (sharedPreferences.getBoolean("firstTime", false)) {
+
+            Log.d("firstTime", " not first time");
 
 
         } else {

@@ -75,6 +75,7 @@ public class WordlyActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_wordly);
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
+
         iv.setImageResource(R.drawable.wordly_icon);
 
         star = findViewById(R.id.gold_star);
@@ -192,6 +193,8 @@ public class WordlyActivity extends AppCompatActivity {
             }
             runOnUiThread(() -> {
                 iv.setVisibility(View.GONE);
+                ImageView hint_background = findViewById(R.id.hint_background);
+                hint_background.setVisibility(View.GONE);
                 star.setVisibility(View.VISIBLE);
                 Animator animator = AnimatorInflater.loadAnimator(getApplicationContext(), R.animator.star_animator);
                 animator.setTarget(star);

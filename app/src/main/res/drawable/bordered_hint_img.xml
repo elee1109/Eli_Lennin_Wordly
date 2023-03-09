@@ -5,7 +5,7 @@
     <!-- View border color and width -->
     <stroke
         android:width="5dp"
-        android:color="@color/dark_orange" >
+        android:color="#30D5C8" >
     </stroke>
 
 </shape>
