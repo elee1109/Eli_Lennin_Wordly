@@ -95,21 +95,18 @@ public class MainActivity extends AppCompatActivity {
         // Check if the "firstTime" flag is set
         if (sharedPreferences.getBoolean("firstTime", true)) {
 
+            Toast.makeText(this, "Welcome Back!", Toast.LENGTH_SHORT).show();
+            // Do something for the first time, like show an introduction or tutorial screen
+        } else {
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("firstTime", false);
+            editor.putBoolean("firstTime", true);
             editor.apply();
             TutorialFragment tutorialFragment = new TutorialFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.add(R.id.fragment_container, tutorialFragment);
             transaction.commit();
-
-
-            // Do something for the first time, like show an introduction or tutorial screen
-        } else {
-            Toast.makeText(this, "Welcome Back!", Toast.LENGTH_SHORT).show();
         }
-
 
 
     }
