@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,7 +47,13 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             words = readWordsFromFile();
-            graph.buildGraph(words);
+            Thread thread2 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    graph.buildGraph(words);
+                }
+            });
+            thread2.start();
             createPuzzle();  //when app boots up create new puzzle
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -73,6 +81,12 @@ public class MainActivity extends AppCompatActivity {
                 if(potentialPath == null){
                     Toast.makeText(MainActivity.this, "No path found", Toast.LENGTH_SHORT).show();
                 }
+                else if(potentialPath.size() == 1){
+                    Toast.makeText(MainActivity.this, "Start and end words are the same", Toast.LENGTH_SHORT).show();
+                }
+                else if(potentialPath.size() == 2){
+                    Toast.makeText(MainActivity.this, "Start and end words are too similar", Toast.LENGTH_SHORT).show();
+                }
                 else{
                     sendPath = potentialPath;
                     Intent intent = new Intent(getApplicationContext(), WordlyActivity.class);
@@ -95,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
         // Check if the "firstTime" flag is set
         if (sharedPreferences.getBoolean("firstTime", false)) {
 
-            Toast.makeText(this, "Welcome Back!", Toast.LENGTH_SHORT).show();
 
         } else {
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -113,39 +126,58 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void createPuzzle(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String[] randomWords = selectRandomWords(words);
+                String startWord = randomWords[0];
+                String endWord = randomWords[1];
 
-        String[] randomWords = selectRandomWords(words);
-        String startWord = randomWords[0];
-        String endWord = randomWords[1];
-        Graph graph = new Graph();
-        graph.buildGraph(words);
-        ArrayList<String> path = graph.shortestPath(startWord, endWord);
-        if (path == null) {
-            Toast.makeText(MainActivity.this, "No path found", Toast.LENGTH_SHORT).show();
-            sendPath = null;
+                ArrayList<String> path = graph.shortestPath(startWord, endWord);
+                if (path == null) {
 
-        } else {
-            EditText word1 = findViewById(R.id.start_word);
-            EditText word2 = findViewById(R.id.end_word);
-            word1.setText(randomWords[0]);
-            word2.setText(randomWords[1]);
+                    sendPath = null;
 
-            sendPath = path;
-        }
+                } else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            EditText word1 = findViewById(R.id.start_word);
+                            EditText word2 = findViewById(R.id.end_word);
+                            word1.setText(randomWords[0]);
+                            word2.setText(randomWords[1]);
+                            sendPath = path;
+                        }
+                    });
+
+
+
+                }
+
+            }
+        });
+        thread.start();
+
+
+
 
 
     }
     public ArrayList<String> readWordsFromFile() throws IOException {
-        InputStream inputStream = getResources().openRawResource(R.raw.words_test);
 
-        ArrayList<String> words = new ArrayList<String>();
+        ArrayList<String> words = new ArrayList<>();
+        InputStream inputStream = getResources().openRawResource(R.raw.words_simple);
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
         String line;
         while ((line = br.readLine()) != null) {
-            words.add(line);
+            if(line.length() == 4){
+                words.add(line);
+            }
         }
         br.close();
+
         return words;
+
     }
     // randomly selects two words (not the same word) from list of words
     public String[] selectRandomWords(ArrayList<String> words) {

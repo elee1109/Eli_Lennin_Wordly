@@ -70,6 +70,8 @@ public class WordlyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_wordly);
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
@@ -113,9 +115,7 @@ public class WordlyActivity extends AppCompatActivity {
                             text = text.substring(0, text.length()-1);
                         }
 
-                        // we need to check if the word entered = the word in the second slot
-                        //tv3.setText(text);
-                        // tv3.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.azure_blue));
+
                         if (text.equals(next_word)) {
                             // correct
                             TextView tv = (TextView) view;
@@ -126,11 +126,7 @@ public class WordlyActivity extends AppCompatActivity {
                             waa.notifyDataSetChanged();
                             currWordIndex++;
                             next_word = correct_path.get(currWordIndex);
-                            // Define a new thread
-
-
-
-                            // Start the thread
+                            //This comes in handy. Kills the looper in the main ui thread without it crashing
                             handler.removeCallbacks(runnable);
                             getNewImages(iv);
 
@@ -207,6 +203,11 @@ public class WordlyActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * https://stackoverflow.com/questions/7597742/what-is-the-purpose-of-looper-and-how-to-use-it
+     * @param iv
+     * +(some chatgpt3)
+     */
     private void getNewImages(ImageView iv) {
         ImageHintExecutor ihe = new ImageHintExecutor();
         ihe.execute(new ImageHintCallback() {
@@ -241,13 +242,10 @@ public class WordlyActivity extends AppCompatActivity {
                 public void run() {
                     try {
                         /**
-                         * Autofilling with github copilot
-                         * but I am just using the get cat facts activity as a template
-                         * copilot does not seem to be much help other than filling in the rest of a line
-                         * most of this is
+                         * All code from notes and https://pixabay.com/api/docs/
+                         *
                          */
-                        // Build the URL object
-                        //found this using a combination of this video: https://www.youtube.com/watch?v=1Q9QZ4Y6zqU
+
 
                         URL pixabay_url = new URL("https://pixabay.com/api/?key=34157164-7fb926e23417bdc9eb71940cc&q="+next_word+"&image_type=photo");
                         HttpURLConnection conn = (HttpURLConnection) pixabay_url.openConnection();
@@ -255,19 +253,6 @@ public class WordlyActivity extends AppCompatActivity {
                         conn.connect();
                         Log.d("URL", pixabay_url.toString());
                         Log.d("SEARCH QUERY", next_word);
-
-
-                        int responsecode = conn.getResponseCode();
-                        if (responsecode == 301) {
-                            //handles redirects
-                            String newUrl = conn.getHeaderField("Location");
-
-                            pixabay_url = new URL(newUrl);
-                            conn = (HttpURLConnection) pixabay_url.openConnection();
-
-                            conn.setRequestMethod("GET");
-                            conn.connect();
-                        }
 
                         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
