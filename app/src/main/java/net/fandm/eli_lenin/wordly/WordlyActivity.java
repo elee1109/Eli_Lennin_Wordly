@@ -116,7 +116,7 @@ public class WordlyActivity extends AppCompatActivity {
                         }
 
 
-                        if (text.equals(next_word)) {
+                        if (text.equals(correct_path.get(i))) {
                             // correct
                             TextView tv = (TextView) view;
                             Toast.makeText(getApplicationContext(), "Correct!", Toast.LENGTH_SHORT).show();
