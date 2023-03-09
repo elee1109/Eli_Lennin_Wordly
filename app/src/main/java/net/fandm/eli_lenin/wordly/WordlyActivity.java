@@ -70,17 +70,16 @@ public class WordlyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
-
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_wordly);
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
         iv.setImageResource(R.drawable.wordly_icon);
-        getNewImages(iv);
+
         star = findViewById(R.id.gold_star);
 
         correct_path =  getIntent().getStringArrayListExtra("path");
         next_word = correct_path.get(1);
+        getNewImages(iv);
 
         waa = new wordArrayAdapter(this, R.layout.word_list_item, correct_path);
         GridView gv = findViewById(R.id.word_list);
@@ -132,6 +131,7 @@ public class WordlyActivity extends AppCompatActivity {
 
 
                             // Start the thread
+                            handler.removeCallbacks(runnable);
                             getNewImages(iv);
 
 
@@ -253,7 +253,8 @@ public class WordlyActivity extends AppCompatActivity {
                         HttpURLConnection conn = (HttpURLConnection) pixabay_url.openConnection();
                         conn.setRequestMethod("GET");
                         conn.connect();
-
+                        Log.d("URL", pixabay_url.toString());
+                        Log.d("SEARCH QUERY", next_word);
 
 
                         int responsecode = conn.getResponseCode();
