@@ -73,7 +73,7 @@ public class WordlyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ImageHintExecutor ihe = new ImageHintExecutor();
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
-        iv.setImageResource(R.drawable.wordly);
+        iv.setImageResource(R.drawable.wordly_icon);
         Looper onCreateLooper = Looper.myLooper();
         ihe.execute(new ImageHintCallback() {
 
@@ -99,6 +99,9 @@ public class WordlyActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_wordly);
 
+
+
+        iv.setImageResource(R.drawable.wordly_icon);
 
         correct_path =  getIntent().getStringArrayListExtra("path");
         next_word = correct_path.get(1);
@@ -176,10 +179,21 @@ public class WordlyActivity extends AppCompatActivity {
                 builder.show();
             }
         });
-
-
         star = findViewById(R.id.gold_star);
         star.setVisibility(View.GONE);
+
+        star.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Animator animator = AnimatorInflater.loadAnimator(getApplicationContext(), R.animator.star_animator);
+                animator.setTarget(star);
+                animator.start();
+                Toast.makeText(getApplicationContext(), "CORRECT!!", Toast.LENGTH_LONG).show();
+
+
+            }
+        });
+
 
         if(currWordIndex == correct_path.size() - 1) {
             Animator animator = AnimatorInflater.loadAnimator(getApplicationContext(), R.animator.star_animator);
@@ -319,7 +333,6 @@ public class WordlyActivity extends AppCompatActivity {
         decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
-
 
     private void hideSystemUI() {
         decorView.setSystemUiVisibility(
