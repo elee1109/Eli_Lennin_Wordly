@@ -8,6 +8,7 @@ import android.animation.AnimatorInflater;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -72,32 +73,29 @@ public class WordlyActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_wordly);
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
-
         iv.setImageResource(R.drawable.wordly_icon);
-
         star = findViewById(R.id.gold_star);
         star.setVisibility(View.GONE);
-
+        getNewImages(iv);
         correct_path =  getIntent().getStringArrayListExtra("path");
+        colors = new ArrayList<Integer>();
+        int size = correct_path.size();
+        for(int i = 0; i < size; i++) {
+            colors.add(0);
+        }
         next_word = correct_path.get(1);
 
-        getNewImages(iv);
+        waa = new wordArrayAdapter(this, R.layout.word_list_item, correct_path, colors);
+        if(savedInstanceState != null) {
 
-        waa = new wordArrayAdapter(this, R.layout.word_list_item, correct_path);
+            correct_path = savedInstanceState.getStringArrayList("correct_path");
+           colors = savedInstanceState.getIntegerArrayList("TextColors");
+           next_word = correct_path.get(1);
+            waa.setData(correct_path, colors);
+        }
         gv = findViewById(R.id.word_list);
         gv.setAdapter(waa);
         waa.notifyDataSetChanged();
-
-        colors = new ArrayList<>();
-        int tv_count = gv.getCount();
-        for (int i = 0; i < tv_count; i++) {
-            View view = waa.getView(i, null, gv);
-            TextView tv = (TextView) view;
-            colors.add(tv.getCurrentTextColor());
-        }
-        Log.d("COLORS SIZE", "Size of textColorList: " + colors.size());
-        Log.d("COLORS SIZE", "count " + gv.getCount());
-
 
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -382,7 +380,6 @@ public class WordlyActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putStringArrayList("correct_path", correct_path);
         savedInstanceState.putIntegerArrayList("TextColors", colors);
-        savedInstanceState.putString("next_word", next_word);
     }
 
     @Override
@@ -390,24 +387,11 @@ public class WordlyActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         correct_path = savedInstanceState.getStringArrayList("correct_path");
         colors = savedInstanceState.getIntegerArrayList("TextColors");
-        Log.d("Colors array", colors.toString());
-        next_word = savedInstanceState.getString("next_word");
 
-        waa = new wordArrayAdapter(this, R.layout.word_list_item, correct_path);
-        gv = findViewById(R.id.word_list);
-        gv.setAdapter(waa);
-        if (savedInstanceState != null) {
-            // Update the text colors of the TextViews in the GridView
-            int count = gv.getCount();
-            for (int i = 0; i < count; i++) {
+        Log.d("CorrectPath", "Correct Path: " + correct_path.toString());
+        Log.d("Colors", "Colors: " + colors.toString());
 
-                View view = gv.getAdapter().getView(i, null, gv);
-                TextView tv = (TextView) view;
-                tv.setTextColor(colors.get(i));
-                Log.d("Text color", Integer.toString(tv.getCurrentTextColor()));
-                waa.notifyDataSetChanged();
-            }
-        }
+
     }
 
 

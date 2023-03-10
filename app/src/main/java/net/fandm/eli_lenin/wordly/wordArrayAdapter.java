@@ -11,12 +11,15 @@ import java.util.ArrayList;
 
 public class wordArrayAdapter extends ArrayAdapter<String> {
     private ArrayList<String> words = new ArrayList<String>();
+
+    private ArrayList<Integer> colors = new ArrayList<Integer>();
     private Context context;
 
-    public wordArrayAdapter(Context context, int word_list_item, ArrayList<String> resource) {
+    public wordArrayAdapter(Context context, int word_list_item, ArrayList<String> resource, ArrayList<Integer> text_colors) {
         super(context, R.layout.word_list_item, resource);
         this.context = context;
         this.words =resource;
+        this.colors = text_colors;
 
     }
     public void add(int position, String word) {
@@ -37,16 +40,17 @@ public class wordArrayAdapter extends ArrayAdapter<String> {
 
         TextView textView = gridView.findViewById(R.id.word_textview);
         if(position == 0 || position == words.size()-1) {
-
-            textView.setText(words.get(position));
             textView.setTextColor(context.getResources().getColor(R.color.black));
-
+        } else {
+            int color = colors.get(position-1);
+            textView.setTextColor(color);
         }
-        else {
-            textView.setText(words.get(position));
-        }
-
-
+        textView.setText(words.get(position));
         return gridView;
+    }
+
+    public void setData(ArrayList<String> words, ArrayList<Integer> t_colors) {
+        this.words = words;
+        this.colors = t_colors;
     }
 }
