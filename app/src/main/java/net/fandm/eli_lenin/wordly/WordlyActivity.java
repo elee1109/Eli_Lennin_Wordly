@@ -228,10 +228,8 @@ public class WordlyActivity extends AppCompatActivity {
             @Override
             public void onComplete(ArrayList<Bitmap> images) {
 
-
                 if(images != null){
                     if(images.size() > 0) {
-
                         Looper.prepare();
                         handler = new Handler(Looper.getMainLooper());
                         runOnUiThread(runnable = () -> {

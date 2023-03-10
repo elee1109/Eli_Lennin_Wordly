@@ -25,7 +25,6 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
-
     Button play;
     Graph graph= new Graph();
     ArrayList<String> words;
@@ -152,9 +151,9 @@ public class MainActivity extends AppCompatActivity {
 
 
             ArrayList<String> path = graph.shortestPath(startWord, endWord);
-            if (path == null) {
+            if (path == null || path.size() > 8 || path.size() < 3) {
 
-                sendPath = null;
+                createPuzzle();
 
             } else {
                 Log.d("HIT", "HIT, EDIT TEXTS SHOULD BE SET");
