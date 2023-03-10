@@ -230,7 +230,9 @@ public class WordlyActivity extends AppCompatActivity {
         ihe.execute(new ImageHintCallback() {
             @Override
             public void onComplete(ArrayList<Bitmap> images) {
-                if(images != null || images.size() != 0){
+
+
+                if(images != null && images.size() != 0){
 
 
                     Looper.prepare();
