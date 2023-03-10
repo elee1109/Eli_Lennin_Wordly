@@ -25,7 +25,6 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
-
     Button play;
     Graph graph= new Graph();
     ArrayList<String> words;
@@ -68,15 +67,6 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<String> potentialPath = graph.shortestPath(start, end);
                 if(potentialPath == null){
                     Toast.makeText(MainActivity.this, "No path found", Toast.LENGTH_SHORT).show();
-                }
-                else if(potentialPath.size() > 8){
-                    Toast.makeText(MainActivity.this, "Path too long", Toast.LENGTH_SHORT).show();
-                }
-                else if(potentialPath.size() == 1){
-                    Toast.makeText(MainActivity.this, "Start and end words are the same", Toast.LENGTH_SHORT).show();
-                }
-                else if(potentialPath.size() == 2){
-                    Toast.makeText(MainActivity.this, "Start and end words are too similar", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     sendPath = potentialPath;
@@ -152,9 +142,9 @@ public class MainActivity extends AppCompatActivity {
 
 
             ArrayList<String> path = graph.shortestPath(startWord, endWord);
-            if (path == null) {
+            if (path == null || path.size() > 8 || path.size() < 3) {
 
-                sendPath = null;
+                createPuzzle();
 
             } else {
                 Log.d("HIT", "HIT, EDIT TEXTS SHOULD BE SET");
