@@ -45,7 +45,7 @@ public class WordlyActivity extends AppCompatActivity {
     /**
      * ImageView slideshow delay found on chatgpt3
      */
-    private Handler handler;
+    private Handler handler= null;
     public Runnable runnable;
     private final int delay = 2000;
 
@@ -124,7 +124,10 @@ public class WordlyActivity extends AppCompatActivity {
                             currWordIndex++;
                             next_word = correct_path.get(currWordIndex);
                             //This comes in handy. Kills the looper in the main ui thread without it crashing
-                            handler.removeCallbacks(runnable);
+                            if(handler != null){
+                                handler.removeCallbacks(runnable);
+                            }
+
                             getNewImages(iv);
 
 
