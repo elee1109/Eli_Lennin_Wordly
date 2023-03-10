@@ -53,7 +53,10 @@ public class WordlyActivity extends AppCompatActivity {
     public String next_word; //change when algo built
     public View decorView;
     public wordArrayAdapter waa;
+    public GridView gv;
     ImageView star;
+
+    ArrayList<Integer> colors;
 
     ArrayList<String> correct_path;
     public int currWordIndex = 1;
@@ -67,6 +70,7 @@ public class WordlyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_wordly);
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
@@ -78,12 +82,28 @@ public class WordlyActivity extends AppCompatActivity {
 
         correct_path =  getIntent().getStringArrayListExtra("path");
         next_word = correct_path.get(1);
+
+
+
+
         getNewImages(iv);
 
         waa = new wordArrayAdapter(this, R.layout.word_list_item, correct_path);
-        GridView gv = findViewById(R.id.word_list);
+        gv = findViewById(R.id.word_list);
         gv.setAdapter(waa);
         waa.notifyDataSetChanged();
+
+        colors = new ArrayList<>();
+        int tv_count = gv.getCount();
+        for (int i = 0; i < tv_count; i++) {
+            View view = waa.getView(i, null, gv);
+            TextView tv = (TextView) view;
+            colors.add(tv.getCurrentTextColor());
+        }
+        Log.d("COLORS SIZE", "Size of textColorList: " + colors.size());
+        Log.d("COLORS SIZE", "count " + gv.getCount());
+
+
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -120,6 +140,8 @@ public class WordlyActivity extends AppCompatActivity {
                             if(currWordIndex!= correct_path.size()-2) Toast.makeText(getApplicationContext(), "Correct!", Toast.LENGTH_SHORT).show();
 
                             tv.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+                            colors.set(i, ContextCompat.getColor(getApplicationContext(), R.color.black));
+
 
                             waa.notifyDataSetChanged();
                             currWordIndex++;
@@ -131,22 +153,16 @@ public class WordlyActivity extends AppCompatActivity {
 
                             getNewImages(iv);
 
-
-
                             Log.d("after incr: " + Integer.toString(currWordIndex), next_word);
 
                             if (currWordIndex == correct_path.size() - 1) {
                                 star.setVisibility(View.VISIBLE);
                                 executeStarAnimation(iv);
-
                             }
-
-
                         } else {
                             // incorrect
                             Toast.makeText(getApplicationContext(), "Incorrect!", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -212,17 +228,8 @@ public class WordlyActivity extends AppCompatActivity {
                 animator.setTarget(star);
                 animator.start();
                 Toast.makeText(getApplicationContext(), "YOU WONNNNNNN!!!!", Toast.LENGTH_LONG).show();
-
-
-
-
-
-
             });
-
         });
-
-
     }
 
     /**
@@ -379,16 +386,27 @@ public class WordlyActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putStringArrayList("correct_path", correct_path);
-        savedInstanceState.putString("next_word", next_word);
+        savedInstanceState.putIntegerArrayList("TextColors", colors);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         correct_path = savedInstanceState.getStringArrayList("correct_path");
-        next_word = savedInstanceState.getString("next_word");
-        // Update your UI with the restored data
+        colors = savedInstanceState.getIntegerArrayList("TextColors");
+        Log.d("Colors array", colors.toString());
+
+        if (savedInstanceState != null) {
+            // Update the text colors of the TextViews in the GridView
+            int count = gv.getCount();
+            for (int i = 0; i < count; i++) {
+                View view = waa.getView(i, null, gv);
+                TextView tv = (TextView) view;
+                tv.setTextColor(colors.get(i));
+            }
+        }
     }
+
 
 
 }
