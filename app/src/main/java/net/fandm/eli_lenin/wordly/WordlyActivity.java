@@ -237,19 +237,26 @@ public class WordlyActivity extends AppCompatActivity {
             public void onComplete(ArrayList<Bitmap> images) {
 
 
-                if(images != null && images.size() != 0){
+                if(images != null){
+                    if(images.size() > 0) {
 
-
-                    Looper.prepare();
-                    handler = new Handler(Looper.getMainLooper());
-
-                    runOnUiThread(runnable = () -> {
-                        iv.setImageBitmap(images.get(index));
-                        index = (index + 1) % images.size();
+                        Looper.prepare();
+                        handler = new Handler(Looper.getMainLooper());
+                        runOnUiThread(runnable = () -> {
+                            iv.setImageBitmap(images.get(index));
+                            index = (index + 1) % images.size();
+                            handler.postDelayed(runnable, delay);
+                        });
+                        Looper.loop();
                         handler.postDelayed(runnable, delay);
-                    });
-                    Looper.loop();
-                    handler.postDelayed(runnable, delay);
+                    }
+                    else{
+                        Log.d("IMAGES = 0", "IMAGES = 0");
+                    }
+                }
+                else{
+                    handler.removeCallbacks(runnable);
+                    Log.d("IMAGES = NULL", "IMAGES = NULL");
                 }
 
             }
