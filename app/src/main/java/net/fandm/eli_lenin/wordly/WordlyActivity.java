@@ -139,8 +139,8 @@ public class WordlyActivity extends AppCompatActivity {
 
                             waa.notifyDataSetChanged();
                             currWordIndex++;
-                            //next_word = correct_path.get(currWordIndex);
-                            next_word = "a;slkdjgr;ea[gjasg";
+                            next_word = correct_path.get(currWordIndex);
+
                             //This comes in handy. Kills the looper in the main ui thread without it crashing
                             if(handler != null){
                                 handler.removeCallbacks(runnable);
@@ -400,7 +400,7 @@ public class WordlyActivity extends AppCompatActivity {
             // Update the text colors of the TextViews in the GridView
             int count = gv.getCount();
             for (int i = 0; i < count; i++) {
-                View convertView = findViewById(R.id.word_textview);
+
                 View view = gv.getAdapter().getView(i, null, gv);
                 TextView tv = (TextView) view;
                 tv.setTextColor(colors.get(i));
