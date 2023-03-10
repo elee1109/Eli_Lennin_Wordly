@@ -397,13 +397,18 @@ public class WordlyActivity extends AppCompatActivity {
         colors = savedInstanceState.getIntegerArrayList("TextColors");
         Log.d("Colors array", colors.toString());
 
+        waa = new wordArrayAdapter(this, R.layout.word_list_item, correct_path);
+        gv = findViewById(R.id.word_list);
+        gv.setAdapter(waa);
         if (savedInstanceState != null) {
             // Update the text colors of the TextViews in the GridView
             int count = gv.getCount();
             for (int i = 0; i < count; i++) {
-                View view = waa.getView(i, null, gv);
+                View view = gv.getAdapter().getView(i, null, gv);
                 TextView tv = (TextView) view;
                 tv.setTextColor(colors.get(i));
+                Log.d("Text color", Integer.toString(tv.getCurrentTextColor()));
+                waa.notifyDataSetChanged();
             }
         }
     }
