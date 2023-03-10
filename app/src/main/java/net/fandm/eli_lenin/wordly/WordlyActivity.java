@@ -67,6 +67,7 @@ public class WordlyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_wordly);
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
@@ -212,17 +213,8 @@ public class WordlyActivity extends AppCompatActivity {
                 animator.setTarget(star);
                 animator.start();
                 Toast.makeText(getApplicationContext(), "YOU WONNNNNNN!!!!", Toast.LENGTH_LONG).show();
-
-
-
-
-
-
             });
-
         });
-
-
     }
 
     /**
@@ -382,7 +374,6 @@ public class WordlyActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putStringArrayList("correct_path", correct_path);
-        savedInstanceState.putString("next_word", next_word);
     }
 
     @Override
