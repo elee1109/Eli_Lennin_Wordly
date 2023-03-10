@@ -91,6 +91,9 @@ public class WordlyActivity extends AppCompatActivity {
             colors = savedInstanceState.getIntegerArrayList("TextColors");
             currWordIndex = savedInstanceState.getInt("currWordIndex");
             next_word = correct_path.get(currWordIndex);
+            Log.d("WordlyActivity", "onCreate: " + currWordIndex);
+            Log.d("WordlyActivity", "onCreate: " + next_word);
+
             waa.setData(correct_path, colors);
         } else{
             next_word = correct_path.get(1);
