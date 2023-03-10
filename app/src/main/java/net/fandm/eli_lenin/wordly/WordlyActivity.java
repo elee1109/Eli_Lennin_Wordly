@@ -76,23 +76,27 @@ public class WordlyActivity extends AppCompatActivity {
         iv.setImageResource(R.drawable.wordly_icon);
         star = findViewById(R.id.gold_star);
         star.setVisibility(View.GONE);
-        getNewImages(iv);
+
+
         correct_path =  getIntent().getStringArrayListExtra("path");
         colors = new ArrayList<Integer>();
         int size = correct_path.size();
         for(int i = 0; i < size; i++) {
             colors.add(0);
         }
-        next_word = correct_path.get(1);
 
         waa = new wordArrayAdapter(this, R.layout.word_list_item, correct_path, colors);
         if(savedInstanceState != null) {
-
             correct_path = savedInstanceState.getStringArrayList("correct_path");
-           colors = savedInstanceState.getIntegerArrayList("TextColors");
-           next_word = correct_path.get(1);
+            colors = savedInstanceState.getIntegerArrayList("TextColors");
+            next_word = correct_path.get(currWordIndex);
             waa.setData(correct_path, colors);
+
         }
+        else{
+            next_word = correct_path.get(1);
+        }
+        getNewImages(iv);
         gv = findViewById(R.id.word_list);
         gv.setAdapter(waa);
         waa.notifyDataSetChanged();
@@ -378,6 +382,7 @@ public class WordlyActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putStringArrayList("correct_path", correct_path);
         savedInstanceState.putIntegerArrayList("TextColors", colors);
+        savedInstanceState.putInt("index", currWordIndex);
     }
 
     @Override
@@ -385,6 +390,7 @@ public class WordlyActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         correct_path = savedInstanceState.getStringArrayList("correct_path");
         colors = savedInstanceState.getIntegerArrayList("TextColors");
+        currWordIndex = savedInstanceState.getInt("index");
 
         Log.d("CorrectPath", "Correct Path: " + correct_path.toString());
         Log.d("Colors", "Colors: " + colors.toString());
