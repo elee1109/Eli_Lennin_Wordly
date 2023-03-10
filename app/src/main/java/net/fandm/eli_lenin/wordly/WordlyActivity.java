@@ -253,7 +253,6 @@ public class WordlyActivity extends AppCompatActivity {
                     }
                 }
                 else{
-                    handler.removeCallbacks(runnable);
                     Log.d("IMAGES = NULL", "IMAGES = NULL");
                 }
 
