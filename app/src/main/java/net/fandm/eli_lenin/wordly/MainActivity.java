@@ -18,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -29,6 +30,13 @@ public class MainActivity extends AppCompatActivity {
     Button play;
     Graph graph= new Graph();
     ArrayList<String> words;
+    EditText startWord;
+    EditText endWord;
+    String start;
+    String end;
+
+
+
     private ArrayList<String> sendPath= new ArrayList<>();
 
 
@@ -40,12 +48,21 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        try {
-            words = readWordsFromFile();
-            createGraph();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+
+            try {
+                words = readWordsFromFile();
+                createGraph(savedInstanceState);
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        startWord = findViewById(R.id.start_word);
+        endWord = findViewById(R.id.end_word);
+        start = startWord.getText().toString();
+        end = endWord.getText().toString();
+
 
         newPuzzle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,10 +78,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                EditText startWord = findViewById(R.id.start_word);
-                EditText endWord = findViewById(R.id.end_word);
-                String start = startWord.getText().toString();
-                String end = endWord.getText().toString();
+                start = startWord.getText().toString();
+                end = endWord.getText().toString();
+
+
                 ArrayList<String> potentialPath = graph.shortestPath(start, end);
                 if(potentialPath == null){
                     Toast.makeText(MainActivity.this, "No path found", Toast.LENGTH_SHORT).show();
@@ -118,13 +135,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void createGraph(){
+    public void createGraph(Bundle savedInstanceState){
         graphExecutor ge = new graphExecutor();
         ge.execute(new graphExecutorCallback() {
             @Override
             public void onGraphCreated(Graph graph) {
                 Log.d("graph", "graph created");
-                createPuzzle();
+                if(savedInstanceState == null){
+                    createPuzzle();
+                }
+
             }
         });
     }
@@ -206,10 +226,25 @@ public class MainActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putStringArrayList("correctPath", sendPath);
+        savedInstanceState.putStringArrayList("words", words);
+
+
+        start = startWord.getText().toString();
+        end = endWord.getText().toString();
+
+        savedInstanceState.putString("start", start);
+        savedInstanceState.putString("end", end);
+
     }
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         sendPath = savedInstanceState.getStringArrayList("correctPath");
+        start = savedInstanceState.getString("start");
+        end = savedInstanceState.getString("end");
+
+        startWord.setText(start);
+        endWord.setText(end);
+
 
     }
 
