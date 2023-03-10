@@ -91,7 +91,6 @@ public class WordlyActivity extends AppCompatActivity {
             colors = savedInstanceState.getIntegerArrayList("TextColors");
             next_word = correct_path.get(currWordIndex);
             waa.setData(correct_path, colors);
-
         }
         else{
             next_word = correct_path.get(1);
@@ -391,11 +390,8 @@ public class WordlyActivity extends AppCompatActivity {
         correct_path = savedInstanceState.getStringArrayList("correct_path");
         colors = savedInstanceState.getIntegerArrayList("TextColors");
         currWordIndex = savedInstanceState.getInt("index");
-
         Log.d("CorrectPath", "Correct Path: " + correct_path.toString());
         Log.d("Colors", "Colors: " + colors.toString());
-
-
     }
 
 

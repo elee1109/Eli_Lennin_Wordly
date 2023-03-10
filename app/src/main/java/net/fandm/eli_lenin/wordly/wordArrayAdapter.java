@@ -42,7 +42,7 @@ public class wordArrayAdapter extends ArrayAdapter<String> {
         if(position == 0 || position == words.size()-1) {
             textView.setTextColor(context.getResources().getColor(R.color.black));
         } else {
-            int color = colors.get(position-1);
+            int color = colors.get(position);
             textView.setTextColor(color);
         }
         textView.setText(words.get(position));
