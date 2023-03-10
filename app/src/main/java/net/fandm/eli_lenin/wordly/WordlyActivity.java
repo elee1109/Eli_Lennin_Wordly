@@ -116,6 +116,7 @@ public class WordlyActivity extends AppCompatActivity {
 
 
                 // Set up the buttons
+                //(some chat gpt stuff)
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -213,9 +214,11 @@ public class WordlyActivity extends AppCompatActivity {
     private void executeStarAnimation(ImageView iv) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            handler.removeCallbacks(runnable);
+            if(handler != null){
+                handler.removeCallbacks(runnable);
+            }
             runOnUiThread(() -> {
-                //sound found on pixabay: https://pixabay.com/sound-effects/search/yay/
+
 
                 iv.setVisibility(View.GONE);
                 ImageView hint_background = findViewById(R.id.hint_background);
@@ -239,6 +242,7 @@ public class WordlyActivity extends AppCompatActivity {
         ihe.execute(new ImageHintCallback() {
             @Override
             public void onComplete(ArrayList<Bitmap> images) {
+                index = 0;
 
                 if(images != null){
                     if(images.size() > 0) {
@@ -349,7 +353,7 @@ public class WordlyActivity extends AppCompatActivity {
             iheThread.start();
         }
     }
-
+    //all UI stuff from chatgpt3
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
