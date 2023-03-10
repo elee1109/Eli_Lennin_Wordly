@@ -89,7 +89,7 @@ public class WordlyActivity extends AppCompatActivity {
         if(savedInstanceState != null) {
             correct_path = savedInstanceState.getStringArrayList("correct_path");
             colors = savedInstanceState.getIntegerArrayList("TextColors");
-            currWordIndex = savedInstanceState.getInt("currWordIndex");
+            currWordIndex = savedInstanceState.getInt("index");
             next_word = correct_path.get(currWordIndex);
             Log.d("WordlyActivity", "onCreate: " + currWordIndex);
             Log.d("WordlyActivity", "onCreate: " + next_word);
@@ -395,6 +395,8 @@ public class WordlyActivity extends AppCompatActivity {
         currWordIndex = savedInstanceState.getInt("index");
         Log.d("CorrectPath", "Correct Path: " + correct_path.toString());
         Log.d("Colors", "Colors: " + colors.toString());
+        Log.d("Colors", "Colors: " + currWordIndex);
+
     }
 
 
