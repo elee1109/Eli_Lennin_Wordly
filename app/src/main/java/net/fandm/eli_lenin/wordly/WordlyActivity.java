@@ -99,7 +99,6 @@ public class WordlyActivity extends AppCompatActivity {
             View view = waa.getView(i, null, gv);
             TextView tv = (TextView) view;
             colors.add(tv.getCurrentTextColor());
-
         }
         Log.d("COLORS SIZE", "Size of textColorList: " + colors.size());
         Log.d("COLORS SIZE", "count " + gv.getCount());
@@ -396,6 +395,8 @@ public class WordlyActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         correct_path = savedInstanceState.getStringArrayList("correct_path");
         colors = savedInstanceState.getIntegerArrayList("TextColors");
+        Log.d("Colors array", colors.toString());
+
         if (savedInstanceState != null) {
             // Update the text colors of the TextViews in the GridView
             int count = gv.getCount();
