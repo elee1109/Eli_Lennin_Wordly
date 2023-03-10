@@ -87,10 +87,9 @@ public class WordlyActivity extends AppCompatActivity {
 
         waa = new wordArrayAdapter(this, R.layout.word_list_item, correct_path, colors);
         if(savedInstanceState != null) {
-
             correct_path = savedInstanceState.getStringArrayList("correct_path");
-           colors = savedInstanceState.getIntegerArrayList("TextColors");
-           next_word = correct_path.get(1);
+            colors = savedInstanceState.getIntegerArrayList("TextColors");
+            next_word = correct_path.get(1);
             waa.setData(correct_path, colors);
         }
         gv = findViewById(R.id.word_list);
@@ -387,11 +386,8 @@ public class WordlyActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         correct_path = savedInstanceState.getStringArrayList("correct_path");
         colors = savedInstanceState.getIntegerArrayList("TextColors");
-
         Log.d("CorrectPath", "Correct Path: " + correct_path.toString());
         Log.d("Colors", "Colors: " + colors.toString());
-
-
     }
 
 
