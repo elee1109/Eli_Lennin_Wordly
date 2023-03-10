@@ -74,6 +74,7 @@ public class WordlyActivity extends AppCompatActivity {
         iv.setImageResource(R.drawable.wordly_icon);
 
         star = findViewById(R.id.gold_star);
+        star.setVisibility(View.GONE);
 
         correct_path =  getIntent().getStringArrayListExtra("path");
         next_word = correct_path.get(1);
@@ -135,6 +136,7 @@ public class WordlyActivity extends AppCompatActivity {
                             Log.d("after incr: " + Integer.toString(currWordIndex), next_word);
 
                             if (currWordIndex == correct_path.size() - 1) {
+                                star.setVisibility(View.VISIBLE);
                                 executeStarAnimation(iv);
 
                             }
@@ -233,6 +235,8 @@ public class WordlyActivity extends AppCompatActivity {
         ihe.execute(new ImageHintCallback() {
             @Override
             public void onComplete(ArrayList<Bitmap> images) {
+
+
                 if(images != null){
                     if(images.size() > 0) {
                         Looper.prepare();
@@ -362,12 +366,6 @@ public class WordlyActivity extends AppCompatActivity {
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
                 View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
-    protected void onDestory(){
-        super.onDestroy();
-        iheThread.interrupt();
-
-
-    }
 
     private void hideSystemUI() {
         decorView.setSystemUiVisibility(
@@ -379,7 +377,20 @@ public class WordlyActivity extends AppCompatActivity {
                         View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putStringArrayList("correct_path", correct_path);
+        savedInstanceState.putString("next_word", next_word);
+    }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        correct_path = savedInstanceState.getStringArrayList("correct_path");
+        next_word = savedInstanceState.getString("next_word");
+        // Update your UI with the restored data
+    }
 
 
 }
