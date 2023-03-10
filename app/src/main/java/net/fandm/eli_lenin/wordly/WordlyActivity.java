@@ -136,7 +136,6 @@ public class WordlyActivity extends AppCompatActivity {
                             tv.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
                             colors.set(i, ContextCompat.getColor(getApplicationContext(), R.color.black));
 
-
                             waa.notifyDataSetChanged();
                             currWordIndex++;
                             next_word = correct_path.get(currWordIndex);
@@ -147,7 +146,6 @@ public class WordlyActivity extends AppCompatActivity {
                             }
 
                             getNewImages(iv);
-
                             Log.d("after incr: " + Integer.toString(currWordIndex), next_word);
 
                             if (currWordIndex == correct_path.size() - 1) {
