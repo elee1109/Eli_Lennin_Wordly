@@ -69,8 +69,6 @@ public class WordlyActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-
-
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_wordly);
         ImageView iv = (ImageView) findViewById(R.id.hint_image);
@@ -82,9 +80,6 @@ public class WordlyActivity extends AppCompatActivity {
 
         correct_path =  getIntent().getStringArrayListExtra("path");
         next_word = correct_path.get(1);
-
-
-
 
         getNewImages(iv);
 
@@ -132,7 +127,6 @@ public class WordlyActivity extends AppCompatActivity {
                             text = text.substring(0, text.length()-1);
                         }
 
-
                         if (text.equals(correct_path.get(i)) ) {
                             // correct
                             TextView tv = (TextView) view;
@@ -145,7 +139,8 @@ public class WordlyActivity extends AppCompatActivity {
 
                             waa.notifyDataSetChanged();
                             currWordIndex++;
-                            next_word = correct_path.get(currWordIndex);
+                            //next_word = correct_path.get(currWordIndex);
+                            next_word = "a;slkdjgr;ea[gjasg";
                             //This comes in handy. Kills the looper in the main ui thread without it crashing
                             if(handler != null){
                                 handler.removeCallbacks(runnable);
@@ -387,6 +382,7 @@ public class WordlyActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putStringArrayList("correct_path", correct_path);
         savedInstanceState.putIntegerArrayList("TextColors", colors);
+        savedInstanceState.putString("next_word", next_word);
     }
 
     @Override
@@ -395,6 +391,7 @@ public class WordlyActivity extends AppCompatActivity {
         correct_path = savedInstanceState.getStringArrayList("correct_path");
         colors = savedInstanceState.getIntegerArrayList("TextColors");
         Log.d("Colors array", colors.toString());
+        next_word = savedInstanceState.getString("next_word");
 
         waa = new wordArrayAdapter(this, R.layout.word_list_item, correct_path);
         gv = findViewById(R.id.word_list);
@@ -403,6 +400,7 @@ public class WordlyActivity extends AppCompatActivity {
             // Update the text colors of the TextViews in the GridView
             int count = gv.getCount();
             for (int i = 0; i < count; i++) {
+                View convertView = findViewById(R.id.word_textview);
                 View view = gv.getAdapter().getView(i, null, gv);
                 TextView tv = (TextView) view;
                 tv.setTextColor(colors.get(i));

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -200,6 +201,16 @@ public class MainActivity extends AppCompatActivity {
             word2 = words.get(random.nextInt(words.size()));
         } while (word1.equals(word2));
         return new String[] {word1, word2};
+    }
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putStringArrayList("correctPath", sendPath);
+    }
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        sendPath = savedInstanceState.getStringArrayList("correctPath");
+
     }
 
 }
