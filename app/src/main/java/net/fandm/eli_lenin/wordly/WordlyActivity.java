@@ -89,10 +89,10 @@ public class WordlyActivity extends AppCompatActivity {
         if(savedInstanceState != null) {
             correct_path = savedInstanceState.getStringArrayList("correct_path");
             colors = savedInstanceState.getIntegerArrayList("TextColors");
+            currWordIndex = savedInstanceState.getInt("currWordIndex");
             next_word = correct_path.get(currWordIndex);
             waa.setData(correct_path, colors);
-        }
-        else{
+        } else{
             next_word = correct_path.get(1);
         }
         getNewImages(iv);
